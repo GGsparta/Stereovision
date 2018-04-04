@@ -12,5 +12,5 @@ Directory: .out/
 Directory: .idea/
 File: Stereovision.iml
 ```
-Congrats! You can now help on this project! Using the following buttons, you are able to update your project (blue button) and to push your work (green) in the GitHub cloud! [buttons](https://ibb.co/fgfogc)
+Congrats! You can now help on this project! Using the following buttons, you are able to update your project (blue button) and to push your work (green) in the GitHub cloud! [buttons](https://image.ibb.co/dGnC7H/Sans_titre.png)
 When you push your work, in the 'Commit message' section, describe the work you are adding, and then, press Ctrl+Alt+K ("Commit and push" button)vto send your work!
