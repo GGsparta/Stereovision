@@ -18,3 +18,4 @@ Congrats! You can now help on this project! Using the ![buttons](https://image.i
 ### Next steps
 - Write stereovision algorithms (respect MVC)
 - Display layouts seen at the BU
+![prototype](https://preview.ibb.co/dbRypx/Nouveau_document_2018_04_09_1.jpg)
