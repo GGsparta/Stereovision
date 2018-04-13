@@ -7,9 +7,9 @@ This academic HCI project is using JavaFX, based on Java 10.
 
 ### Prototypes
 - Prototype 1.0:
-![prototype 1.0](https://preview.ibb.co/bJG447/GL40_prototype_1_0.png)
+>![prototype 1.0](https://preview.ibb.co/bJG447/GL40_prototype_1_0.png)
 - Prototype papier (~beta):
-![prototype_papier](https://preview.ibb.co/dbRypx/Nouveau_document_2018_04_09_1.jpg)
+>![prototype_papier](https://preview.ibb.co/dbRypx/Nouveau_document_2018_04_09_1.jpg)
 
 ### Install project in Intellij IDEA for contributing
 1. Start Intellij IDEA, and go in VCS > Checkout from Version Control > Git.
