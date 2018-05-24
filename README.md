@@ -11,7 +11,7 @@ This academic HCI project is using JavaFX, based on Java 10.
 - Prototype papier (~beta):
 >![prototype_papier](https://preview.ibb.co/dbRypx/Nouveau_document_2018_04_09_1.jpg)
 
-### Install project in Intellij IDEA for contributing
+## Install project in Intellij IDEA for contributing
 1. Start Intellij IDEA, and go in VCS > Checkout from Version Control > Git.
 2. Now enter the URL of this project (https://github.com/GGsparta/Stereovision), and click on the 'Login' button. This way, you'll be able to login on GitHub and contribute to this project if I added you among the contributors. If you can't see the 'Login' button, maybe you're already logged in, so just click on 'Clone'.
 3. Intellij IDEA will thus help you to create a new project from these existing sources. Go ahead, click 'ok' to all.
