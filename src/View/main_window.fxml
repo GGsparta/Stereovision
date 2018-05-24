@@ -17,23 +17,29 @@
   <items>
     <AnchorPane maxWidth="400.0" minWidth="150.0" prefWidth="200.0" style="-fx-background-color: #EEE;">
          <children>
-            <Label layoutX="14.0" layoutY="54.0" text="First image : " />
+            <Label layoutX="14.0" layoutY="54.0" text="First image : " AnchorPane.topAnchor="54.0" />
             <Button fx:id="firstimagebrowse" layoutX="82.0" layoutY="71.0" mnemonicParsing="false" onAction="#Button1Action" text="Browse..." />
             <Label fx:id="firstimagepath" layoutX="34.0" layoutY="109.0" prefHeight="17.0" prefWidth="217.0" text="PathOfImage..." />
             <Label layoutX="14.0" layoutY="157.0" text="Second image : " />
             <Button fx:id="secondimagebrowse" layoutX="87.0" layoutY="174.0" mnemonicParsing="false" onAction="#Button2Action" text="Browse..." />
             <Label fx:id="secondimagepath" layoutX="34.0" layoutY="220.0" prefHeight="17.0" prefWidth="217.0" text="PathOfImage1..." />
-            <Separator layoutY="301.0" prefHeight="17.0" prefWidth="249.0" />
-            <Button fx:id="savebutton" layoutX="77.0" layoutY="276.0" mnemonicParsing="false" onAction="#SaveAction" text="Save &amp; Upload" />
-            <Label layoutX="111.0" layoutY="318.0" text="Filters : " />
+            <Separator layoutX="130.0" layoutY="301.0" prefHeight="17.0" prefWidth="112.0" />
+            <Button fx:id="savebutton" layoutX="77.0" layoutY="269.0" mnemonicParsing="false" onAction="#SaveAction" text="Save &amp; Upload" />
+            <Label layoutX="87.0" layoutY="301.0" text="Filters  ">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
             <ComboBox fx:id="filtercombo" layoutX="50.0" layoutY="335.0" prefWidth="150.0" promptText="Select Filter" />
             <Separator layoutX="125.0" layoutY="37.0" prefHeight="17.0" prefWidth="122.0" />
-            <Label layoutX="73.0" layoutY="37.0" text="Sources">
+            <Label layoutX="77.0" layoutY="37.0" text="Sources">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
             <Separator layoutX="3.0" layoutY="37.0" prefHeight="17.0" prefWidth="68.0" />
+            <Button fx:id="morebutton" layoutX="99.0" layoutY="563.0" mnemonicParsing="false" onAction="#MoreAction" text="More..." />
+            <Pane fx:id="transitionpane" layoutX="31.0" layoutY="421.0" prefHeight="112.0" prefWidth="112.0" />
+            <Separator layoutX="-1.0" layoutY="301.0" prefHeight="17.0" prefWidth="85.0" />
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #555;">
          <children>
@@ -48,6 +54,7 @@
                   <Label fx:id="firstimageid" layoutX="35.0" layoutY="18.0" text="First image preview : " />
                   <Label fx:id="secondimageid" layoutX="315.0" layoutY="18.0" text="Second image preview : " />
                   <Pane fx:id="resultspane" layoutX="24.0" layoutY="300.0" prefHeight="326.0" prefWidth="552.0" />
+                  <Label layoutX="10.0" layoutY="300.0" text="Results Preview : " />
                </children>
             </Pane>
          </children></AnchorPane>

@@ -1,15 +1,16 @@
 package Controller;
 
+import Magic.ResizeHeightTranslation;
+import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 
 import javafx.scene.image.ImageView ;
@@ -19,6 +20,7 @@ import java.util.Observable;
 import java.util.ResourceBundle;
 
 import javafx.scene.image.Image ;
+import javafx.util.Duration;
 
 
 public class Controller implements Initializable{
@@ -41,6 +43,10 @@ public class Controller implements Initializable{
     private Pane secondimagepreview;
     @FXML
     private ComboBox<String> filtercombo;
+    @FXML
+    private Button morebutton;
+    @FXML
+            private Pane transitionpane;
     ObservableList<String> list= FXCollections.observableArrayList("Filter1","Filter2","Filter3","Filter4");
     private String firstPath;
     private String secondPath;
@@ -91,6 +97,46 @@ public class Controller implements Initializable{
 
             alert.showAndWait();
         }
+    }
+
+    public void MoreAction(ActionEvent event){
+        HBox hbox = new HBox();
+        Pane spacer = new Pane();
+
+        GridPane more=new GridPane();
+        more.setMaxHeight(300);
+        more.setMinHeight(100);
+        Button btn=new Button("whatever");
+        Label x=new Label("X :");
+        Label y=new Label("Y :");
+        Label z=new Label("Z :");
+        TextField xf=new TextField("0");
+        xf.setMaxWidth(30);
+        TextField yf=new TextField("0");
+        yf.setMaxWidth(30);
+
+        TextField zf=new TextField("0");
+        zf.setMaxWidth(30);
+
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.setSpacing(3);
+        hbox.getChildren().addAll(x, xf,y,yf,z,zf,btn);
+
+        more.getChildren().addAll(hbox);
+        //more.setStyle("-fx-background-color: #000000");
+
+        ResizeHeightTranslation rht = new ResizeHeightTranslation(Duration.millis(1000), transitionpane, more.getMinHeight() );
+
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), more);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+
+        SequentialTransition pt = new SequentialTransition(rht, ft);
+
+        pt.play();
+        more.setAlignment(Pos.CENTER);
+        transitionpane.getChildren().add(more);
     }
 
     public void SaveAction(ActionEvent event){
