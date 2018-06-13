@@ -27,6 +27,9 @@ import javafx.util.Duration;
 public class Controller implements Initializable {
 
 
+    public Label firstimageid;
+    public Label secondimageid;
+    public Pane resultspane;
     @FXML
     private Label firstimagepath;
     @FXML
