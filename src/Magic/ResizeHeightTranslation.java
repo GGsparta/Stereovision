@@ -7,10 +7,10 @@ import javafx.util.Duration;
 
 public class ResizeHeightTranslation extends Transition {
 
-    protected Region region;
-    protected double startHeight;
-    protected double newHeight;
-    protected double heightDiff;
+    private Region region;
+    private double startHeight;
+    private double newHeight;
+    private double heightDiff;
 
     public ResizeHeightTranslation( Duration duration, Region region, double newHeight ) {
         setCycleDuration(duration);
