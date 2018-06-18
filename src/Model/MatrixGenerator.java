@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static java.lang.Math.*;
 
-public class MatrixGenerator {
+class MatrixGenerator {
     /**
      * Matrix Generation.
      * Potential new parameter(s):
@@ -145,8 +145,8 @@ public class MatrixGenerator {
     private void Triangulate() {
         for (HashMap.Entry<Point,Point> pair : pixelPairs.entrySet()) {
             ouputMatrix.setPoint(
-                    -(pair.getKey().x+pair.getValue().x)/(2*cos(alpha*repere/2)),
-                    pair.getKey().y/repere,
+                    (int) (-(pair.getKey().x+pair.getValue().x)/(2*cos(alpha*repere/2))),
+                    (int) (pair.getKey().y/repere),
                     -(pair.getKey().x-pair.getValue().x)/(2*cos(alpha*repere/2))
             );
         }

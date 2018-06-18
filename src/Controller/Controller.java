@@ -24,7 +24,7 @@ import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 
-public class Controller implements Initializable {
+class Controller implements Initializable {
 
 
     public Label firstimageid;
@@ -50,7 +50,7 @@ public class Controller implements Initializable {
     private Button morebutton;
     @FXML
     private Pane transitionpane;
-    ObservableList<String> list = FXCollections.observableArrayList("Filter1", "Filter2", "Filter3", "Filter4");
+    private ObservableList<String> list = FXCollections.observableArrayList("Filter1", "Filter2", "Filter3", "Filter4");
     private String firstPath;
     private String secondPath;
 
