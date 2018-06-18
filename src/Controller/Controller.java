@@ -1,10 +1,12 @@
 package Controller;
 
 import Magic.ResizeHeightTranslation;
+import Model.MatrixGenerator;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +17,7 @@ import javafx.stage.FileChooser;
 
 import javafx.scene.image.ImageView;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.util.Observable;
@@ -24,7 +27,7 @@ import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 
-class Controller implements Initializable {
+public class Controller implements Initializable {
 
 
     public Label firstimageid;
@@ -51,8 +54,8 @@ class Controller implements Initializable {
     @FXML
     private Pane transitionpane;
     private ObservableList<String> list = FXCollections.observableArrayList("Filter1", "Filter2", "Filter3", "Filter4");
-    private String firstPath;
-    private String secondPath;
+    private String firstPath = "D:\\yoyo6\\Documents\\UTBM\\Stereovision\\examples\\MILITARY_LEFT.jpg"; // TODO remove init path
+    private String secondPath = "D:\\yoyo6\\Documents\\UTBM\\Stereovision\\examples\\MILITARY_RIGHT.jpg"; // TODO remove init path
 
     public void Button1Action(ActionEvent event) {
         // Image imageToImplement;
@@ -145,17 +148,20 @@ class Controller implements Initializable {
 
     public void SaveAction(ActionEvent event) {
         System.out.println("Saving began");
-        Image image = new Image("file:///" + firstPath);
-        ImageView iv = new ImageView(image);
+        Image image1 = new Image("file:///" + firstPath);
+        ImageView iv = new ImageView(image1);
         iv.setFitHeight(200);
         iv.setFitWidth(200);
         firstimagepreview.getChildren().addAll(iv);
-        Image image1 = new Image("file:///" + secondPath);
-        ImageView iv1 = new ImageView(image1);
+        Image image2 = new Image("file:///" + secondPath);
+        ImageView iv1 = new ImageView(image2);
         iv1.setFitWidth(200);
         iv1.setFitHeight(200);
         secondimagepreview.getChildren().addAll(iv1);
 
+        MatrixGenerator matrixGenerator = new MatrixGenerator();
+        matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null),SwingFXUtils.fromFXImage(image2, null));
+        //matrixGenerator.computeMatrix();
     }
 
     @Override

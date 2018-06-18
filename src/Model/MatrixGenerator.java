@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 import static java.lang.Math.*;
 
-class MatrixGenerator {
+public class MatrixGenerator {
     /**
      * Matrix Generation.
      * Potential new parameter(s):

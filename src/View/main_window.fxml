@@ -18,7 +18,7 @@
              text="PathOfImage1..."/>
       <Separator layoutX="130.0" layoutY="301.0" prefHeight="17.0" prefWidth="112.0"/>
       <Button fx:id="savebutton" layoutX="77.0" layoutY="269.0" mnemonicParsing="false" onAction="#SaveAction"
-              text="Save &amp; Upload"/>
+              text="Save &amp; update"/>
       <Label layoutX="87.0" layoutY="301.0" text="Filters  ">
          <font>
             <Font name="System Bold" size="12.0"/>
