@@ -2,8 +2,10 @@ package Controller;
 
 import Magic.ResizeHeightTranslation;
 import Model.MatrixGenerator;
+import Model.MatrixPoint3D;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -147,6 +149,7 @@ public class Controller implements Initializable {
     }
 
     public void SaveAction(ActionEvent event) {
+        savebutton.setDisable(true);
         System.out.println("Saving began");
         Image image1 = new Image("file:///" + firstPath);
         ImageView iv = new ImageView(image1);
@@ -159,9 +162,21 @@ public class Controller implements Initializable {
         iv1.setFitHeight(200);
         secondimagepreview.getChildren().addAll(iv1);
 
-        MatrixGenerator matrixGenerator = new MatrixGenerator();
-        matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null),SwingFXUtils.fromFXImage(image2, null));
-        //matrixGenerator.computeMatrix();
+
+        new Thread(() -> {
+            MatrixGenerator matrixGenerator = new MatrixGenerator();
+            if(!matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null), SwingFXUtils.fromFXImage(image2, null)))
+                return;
+
+
+            for (MatrixPoint3D point : matrixGenerator.computeMatrix()) {
+                Platform.runLater(()->{
+                    resultspane.getChildren().add(point.view);
+                    System.out.println("Added point ("+point.getX()+","+point.getY()+","+point.getZ()+")");
+                });
+            }
+            savebutton.setDisable(true);
+        }).start();
     }
 
     @Override

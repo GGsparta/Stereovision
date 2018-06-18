@@ -1,11 +1,14 @@
 package Model;
 
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Point3D;
 import javafx.util.Pair;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static java.lang.Math.*;
@@ -28,9 +31,10 @@ public class MatrixGenerator {
 
     /*
     Parameters:
-    */private double alpha/*            Alpha           */=PI/2;/*
+    */private double alpha/*            Alpha           */=PI/6;/*
     */private double repere/*           Repere          */=1;/*
-    */private double matchingLimit/*    Matching Limit  */=0.1;/*
+    */private double matchingLimit/*    Matching Limit  */=10000;/*
+    */private int pace/*                Pace            */=10;/*
     */
     private int windowSize = 3; // (3x3 window)
 
@@ -42,7 +46,8 @@ public class MatrixGenerator {
         this.ipL = inputPictureLeft;
         this.ipR = inputPictureRight;
 
-        imagesSize = new Point(ipL.getWidth(), ipR.getHeight());
+        imagesSize = new Point(ipL.getWidth(), ipL.getHeight());
+        pace *= (ipL.getWidth()*ipL.getHeight()) / (233*350);
 
         // if pictures are not the same size, it doesn't work.
         return ipL.getWidth()== ipR.getWidth() && ipL.getHeight()== ipR.getHeight();
@@ -70,35 +75,52 @@ public class MatrixGenerator {
 
         4 constraints:
             - epipolar: yd=yg, no side pixels
-            - uniqueness: pair found in L-->R and in R-->L
+            - uniqueness: pair found in L-->R and in R-->L (CURRENTLY IGNORED)
             - limit: match pixels if its difference < limit S
             - order (optional)
          */
+        ArrayList<Thread> threads = new ArrayList<>();
 
-        for (int j = windowSize/2; j < imagesSize.y-(windowSize/2); j++) { // no side pixel constraint
+        for (int j = windowSize/2; j < imagesSize.y-(windowSize/2); j+= pace) { // no side pixel constraint
+            IntegerProperty lastIrFound = new SimpleIntegerProperty(0);
+            int finalJ = j;
+            Thread t = new Thread(() -> {
+                for (int i = windowSize / 2; i < imagesSize.x - (windowSize / 2); i += pace) { // no side pixel constraint
+                    try {
+                        // limit constraint
+                        int iR = findBestClosePointOnRow(i, finalJ, ipL);
+                        if (iR < 0) return;
 
-            // epipolar constraint
-            int[] rowL = new int[imagesSize.x],
-                    rowR = new int[imagesSize.x];
-            ipL.getData().getPixels(0,j,imagesSize.x,1,rowL);
-            ipR.getData().getPixels(0,j,imagesSize.x,1,rowR);
+                        // uniqueness & limit constraint
+                        //int iL = findBestClosePointOnRow(iR, finalJ, ipR);
+                        //if (abs(iL-i)>400 || iL<0) return;
 
-            int lastIrFound = 0;
-
-            for(int i=windowSize/2; i< imagesSize.x-(windowSize/2); i++) { // no side pixel constraint
-                // limit constraint
-                int iR = findBestClosePointOnRow(i,j,ipL);
-                if(iR<0) continue;
-
-                // uniqueness & limit constraint
-                int iL=findBestClosePointOnRow(iR,j,ipR);
-                if(iL!=i) continue;
-
-                if(iR>=lastIrFound) { // order constraint
-                    lastIrFound = iR;
-                    pixelPairs.put(new Point(iL,j),new Point(iR,j));
+                        syncronisedPointInsertion(iR, i, finalJ, lastIrFound);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+            });
+            threads.add(t);
+            t.start();
+        }
+
+        System.out.println("Waiting for the threads...");
+
+        int i=0;
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+        }
+    }
+
+    synchronized private void syncronisedPointInsertion(int iR, int iL, int j, IntegerProperty lastIrFound) throws InterruptedException {
+        if(iR>=lastIrFound.getValue()) { // order constraint
+            lastIrFound.setValue(iR);
+          pixelPairs.put(new Point(iL,j),new Point(iR,j));
         }
     }
 
@@ -109,27 +131,31 @@ public class MatrixGenerator {
         BufferedImage image2 = image1==ipL?ipR:ipL;
 
         for (int ie = windowSize/2; ie<imagesSize.x-(windowSize/2); ie++) {
-            int[] data1 = new int[4*(windowSize/2)*(windowSize/2)],
-                  data2 = new int[4*(windowSize/2)*(windowSize/2)];
+            int[] data1 = new int[windowSize*windowSize*3],
+                  data2 = new int[windowSize*windowSize*3];
 
-            image1.getData().getPixels(
+            data1 = image1.getData().getPixels(
                     i-(windowSize/2),
                     j-(windowSize/2),
-                    windowSize/2,
-                    windowSize/2,
+                    windowSize,
+                    windowSize,
                     data1
             );
-            image2.getData().getPixels(
+            data2 = image2.getData().getPixels(
                     ie-(windowSize/2),
                     j-(windowSize/2),
-                    windowSize/2,
-                    windowSize/2,
+                    windowSize,
+                    windowSize,
                     data2
             );
 
             double diff=0;
-            for(int k=0; k<data1.length; k++)
-                diff+=pow(data1[k]-data2[k],2);
+            for(int k=0; k<data1.length; k+=3) {
+                diff+=pow(
+                        (data1[k]+data1[k+1]+data1[k+2]-data2[k]-data2[k+1]-data2[k+2])/3,
+                        2
+                );
+            }
 
 
             if(diff<matchingLimit && diff<bestDiff) {
@@ -144,7 +170,7 @@ public class MatrixGenerator {
     private void Triangulate() {
         for (HashMap.Entry<Point,Point> pair : pixelPairs.entrySet()) {
             ouputMatrix.addPoint(
-                    -(pair.getKey().x+pair.getValue().x)/(2*cos(alpha*repere/2)),
+                    (pair.getKey().x+pair.getValue().x)/(2*cos(alpha*repere/2)),
                     pair.getKey().y/repere,
                     -(pair.getKey().x-pair.getValue().x)/(2*cos(alpha*repere/2))
             );

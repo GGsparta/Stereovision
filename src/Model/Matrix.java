@@ -5,8 +5,8 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class Matrix {
-    private ArrayList<MatrixPoint3D> map; // The map contains all the matrix's points, one for each (X,Y) pair
+public class Matrix extends ArrayList<MatrixPoint3D> { // The map contains all the matrix's points, one for each (X,Y) pair
+
 
     /*
     The map contains all the matrix's points (X,Y,Z) this way:
@@ -15,7 +15,7 @@ class Matrix {
      */
 
     Matrix() {
-        map = new ArrayList<>();
+        super();
 
         /*// Create matrix basis
         for(int i=0; i<x; i++)
@@ -31,7 +31,7 @@ class Matrix {
 
     void addPoint(double x, double y, double z) {
         MatrixPoint3D p = new MatrixPoint3D(x,y,z);
-        map.add(p);
+        add(p);
     }
 
     /*private MatrixPoint3D findPoint(int x, int y) {
