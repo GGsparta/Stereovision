@@ -7,7 +7,6 @@ import javafx.util.Pair;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.Map;
 
 import static java.lang.Math.*;
 
@@ -30,7 +29,7 @@ class MatrixGenerator {
     /*
     Parameters:
     */private double alpha/*            Alpha           */=PI/2;/*
-    */private double repere/*           Repere          */=0.5;/*
+    */private double repere/*           Repere          */=1;/*
     */private double matchingLimit/*    Matching Limit  */=0.1;/*
     */
     private int windowSize = 3; // (3x3 window)
@@ -50,7 +49,7 @@ class MatrixGenerator {
     }
 
     public Matrix computeMatrix() {
-        ouputMatrix = new Matrix(ipL.getWidth(), ipL.getHeight());
+        ouputMatrix = new Matrix();
         /*
         Steps:    https://www.irit.fr/~Jean-Denis.Durou/ENSEIGNEMENT/VISION/COURS/co03.html
         - Matching:
@@ -144,9 +143,9 @@ class MatrixGenerator {
 
     private void Triangulate() {
         for (HashMap.Entry<Point,Point> pair : pixelPairs.entrySet()) {
-            ouputMatrix.setPoint(
-                    (int) (-(pair.getKey().x+pair.getValue().x)/(2*cos(alpha*repere/2))),
-                    (int) (pair.getKey().y/repere),
+            ouputMatrix.addPoint(
+                    -(pair.getKey().x+pair.getValue().x)/(2*cos(alpha*repere/2)),
+                    pair.getKey().y/repere,
                     -(pair.getKey().x-pair.getValue().x)/(2*cos(alpha*repere/2))
             );
         }
