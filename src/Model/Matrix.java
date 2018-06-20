@@ -1,5 +1,6 @@
 package Model;
 
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -29,8 +30,8 @@ public class Matrix extends ArrayList<MatrixPoint3D> { // The map contains all t
 
     }
 
-    void addPoint(double x, double y, double z) {
-        MatrixPoint3D p = new MatrixPoint3D(x,y,z);
+    void addPoint(double x, double y, double z, Color color) {
+        MatrixPoint3D p = new MatrixPoint3D(x,y,z,color);
         add(p);
     }
 

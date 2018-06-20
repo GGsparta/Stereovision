@@ -1,6 +1,9 @@
 package Model;
 
 import javafx.geometry.Point3D;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Material;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 
 import java.util.ArrayList;
@@ -10,9 +13,10 @@ public class MatrixPoint3D extends Point3D {
     public Sphere view;
     ArrayList<MatrixPoint3D> neighbours;
 
-    MatrixPoint3D(double x, double y, double z) {
+    MatrixPoint3D(double x, double y, double z, Color color) {
         super(x,y,z);
         view = new Sphere(1.5);
+        view.setMaterial(new PhongMaterial(color));
         actualizeView();
     }
 

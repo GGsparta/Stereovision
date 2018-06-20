@@ -170,12 +170,10 @@ public class Controller implements Initializable {
 
 
             for (MatrixPoint3D point : matrixGenerator.computeMatrix()) {
-                Platform.runLater(()->{
-                    resultspane.getChildren().add(point.view);
-                    System.out.println("Added point ("+point.getX()+","+point.getY()+","+point.getZ()+")");
-                });
+                Platform.runLater(()-> resultspane.getChildren().add(point.view));
             }
             savebutton.setDisable(true);
+            System.out.println("Process finished!");
         }).start();
     }
 

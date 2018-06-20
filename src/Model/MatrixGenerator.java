@@ -4,12 +4,14 @@ package Model;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Point3D;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Math.*;
 
@@ -33,8 +35,8 @@ public class MatrixGenerator {
     Parameters:
     */private double alpha/*            Alpha           */=PI/6;/*
     */private double repere/*           Repere          */=1;/*
-    */private double matchingLimit/*    Matching Limit  */=10000;/*
-    */private int pace/*                Pace            */=10;/*
+    */private double matchingLimit/*    Matching Limit  */=20000;/*
+    */private int pace/*                Pace            */=8;/*
     */
     private int windowSize = 3; // (3x3 window)
 
@@ -169,12 +171,25 @@ public class MatrixGenerator {
 
     private void Triangulate() {
         for (HashMap.Entry<Point,Point> pair : pixelPairs.entrySet()) {
+
             ouputMatrix.addPoint(
                     (pair.getKey().x+pair.getValue().x)/(2*cos(alpha*repere/2)),
                     pair.getKey().y/repere,
-                    -(pair.getKey().x-pair.getValue().x)/(2*cos(alpha*repere/2))
+                    -(pair.getKey().x-pair.getValue().x)/(2*cos(alpha*repere/2)),
+                    getColorForPair(pair)
             );
         }
+    }
+
+    private Color getColorForPair(Map.Entry<Point, Point> pair) {
+        int[] colorL = ipL.getRaster().getPixel(pair.getKey().x,pair.getKey().y,new int[3]),
+                colorR = ipR.getRaster().getPixel(pair.getValue().x,pair.getValue().y,new int[3]);
+        return new Color(
+                (colorL[0]+colorR[0])*0.5/255,
+                (colorL[1]+colorR[1])*0.5/255,
+                (colorL[2]+colorR[2])*0.5/255,
+                1
+        );
     }
 
 
