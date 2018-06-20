@@ -175,7 +175,7 @@ public class MatrixGenerator {
             ouputMatrix.addPoint(
                     (pair.getKey().x+pair.getValue().x)/(2*cos(alpha*repere/2)),
                     pair.getKey().y/repere,
-                    -(pair.getKey().x-pair.getValue().x)/(2*cos(alpha*repere/2)),
+                    (pair.getKey().x-pair.getValue().x)/(2*cos(alpha*repere/2)),
                     getColorForPair(pair)
             );
         }

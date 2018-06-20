@@ -3,8 +3,11 @@ package Controller;
 import Magic.ResizeHeightTranslation;
 import Model.MatrixGenerator;
 import Model.MatrixPoint3D;
+import View.View3D;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 
@@ -34,7 +38,8 @@ public class Controller implements Initializable {
 
     public Label firstimageid;
     public Label secondimageid;
-    public Pane resultspane;
+    public View3D resultspane;
+    public SplitPane root;
     @FXML
     private Label firstimagepath;
     @FXML
@@ -56,8 +61,8 @@ public class Controller implements Initializable {
     @FXML
     private Pane transitionpane;
     private ObservableList<String> list = FXCollections.observableArrayList("Filter1", "Filter2", "Filter3", "Filter4");
-    private String firstPath = "D:\\yoyo6\\Documents\\UTBM\\Stereovision\\examples\\MILITARY_LEFT.jpg"; // TODO remove init path
-    private String secondPath = "D:\\yoyo6\\Documents\\UTBM\\Stereovision\\examples\\MILITARY_RIGHT.jpg"; // TODO remove init path
+    private String firstPath = "D:\\yoyo6\\Documents\\UTBM\\Stereovision\\examples\\MILITARY_LEFT.jpg"; // TODO remove init test path
+    private String secondPath = "D:\\yoyo6\\Documents\\UTBM\\Stereovision\\examples\\MILITARY_RIGHT.jpg"; // TODO remove init test path
 
     public void Button1Action(ActionEvent event) {
         // Image imageToImplement;
@@ -165,13 +170,21 @@ public class Controller implements Initializable {
 
         new Thread(() -> {
             MatrixGenerator matrixGenerator = new MatrixGenerator();
-            if(!matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null), SwingFXUtils.fromFXImage(image2, null)))
+            if (!matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null), SwingFXUtils.fromFXImage(image2, null)))
                 return;
 
-
+            double minX = Double.MAX_VALUE,minY = Double.MAX_VALUE,maxX = Double.MIN_VALUE,maxY = Double.MIN_VALUE;
             for (MatrixPoint3D point : matrixGenerator.computeMatrix()) {
-                Platform.runLater(()-> resultspane.getChildren().add(point.view));
+                if(point.getX()<minX) minX = point.getX();
+                if(point.getX()>maxX) maxX = point.getX();
+                if(point.getY()<minY) minY = point.getY();
+                if(point.getY()>maxY) maxY = point.getY();
+                Platform.runLater(() -> {
+                    resultspane.getChildren().add(point.view);
+                    System.out.println("Added point (" + point.getX() + "," + point.getY() + "," + point.getZ() + ")");
+                });
             }
+            resultspane.setPrefSize(maxX-minX,maxY-minY);
             savebutton.setDisable(true);
             System.out.println("Process finished!");
         }).start();
@@ -180,5 +193,22 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         filtercombo.setItems(list);
+
+        root.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case UP:    case Z: resultspane.moving[0] = true; break;
+                case RIGHT: case D: resultspane.moving[1] = true; break;
+                case DOWN:  case S: resultspane.moving[2] = true; break;
+                case LEFT:  case Q: resultspane.moving[3] = true; break;
+            }
+        });
+        root.setOnKeyReleased(event -> {
+            switch (event.getCode()) {
+                case UP:    case Z: resultspane.moving[0] = false; break;
+                case RIGHT: case D: resultspane.moving[1] = false; break;
+                case DOWN:  case S: resultspane.moving[2] = false; break;
+                case LEFT:  case Q: resultspane.moving[3] = false; break;
+            }
+        });
     }
 }

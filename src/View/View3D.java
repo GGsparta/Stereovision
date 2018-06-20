@@ -1,0 +1,61 @@
+package View;
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.collections.ListChangeListener;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.layout.StackPane;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
+import javafx.util.Duration;
+
+import static java.lang.Math.*;
+
+public class View3D extends StackPane {
+    public boolean[] moving;
+    private double rotateSpeed = 1.5;
+    private final Point2D cm = new Point2D(117, 172); // counter_margin
+
+    private Rotate rx,ry;
+
+    public View3D() {
+        super();
+
+        moving = new boolean[4]; // order: UP RIGHT DOWN RIGHT
+        rx = new Rotate(0.1, Rotate.X_AXIS);
+        ry = new Rotate(0.1, Rotate.Y_AXIS);
+        getTransforms().clear();
+        getTransforms().addAll(rx,ry);
+
+        //setTranslateY(-cm.getY());
+        //setTranslateX(-cm.getX());
+
+        widthProperty().addListener((observable, oldValue, newValue) -> {
+            rx.setPivotX(newValue.doubleValue());
+            ry.setPivotX(newValue.doubleValue());
+        });
+        heightProperty().addListener((observable, oldValue, newValue) -> {
+            rx.setPivotY(newValue.doubleValue());
+            ry.setPivotY(newValue.doubleValue());
+        });
+
+        rx.setAngle(0);
+        ry.setAngle(0); // execute a change to update view
+
+
+
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(25),
+                event -> {
+                    if (moving[0]) rx.setAngle(min(rx.getAngle() + rotateSpeed,90));
+                    if (moving[1]) ry.setAngle(min(ry.getAngle() + rotateSpeed,90));
+                    if (moving[2]) rx.setAngle(max(rx.getAngle() - rotateSpeed,-90));
+                    if (moving[3]) ry.setAngle(max(ry.getAngle() - rotateSpeed,-90));
+                })
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+}
