@@ -36,7 +36,7 @@ public class MatrixGenerator {
     */private double alpha/*            Alpha           */=PI/6;/*
     */private double repere/*           Repere          */=1;/*
     */private double matchingLimit/*    Matching Limit  */=20000;/*
-    */private int pace/*                Pace            */=8;/*
+    */private int pace/*                Pace            */=20;/*
     */
     private int windowSize = 3; // (3x3 window)
 

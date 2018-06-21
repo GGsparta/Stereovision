@@ -9,7 +9,7 @@ import javafx.scene.shape.Sphere;
 import java.util.ArrayList;
 
 public class MatrixPoint3D extends Point3D {
-    private final static Point3D ratio = new Point3D(0.8,0.8,0.8);
+    public final static Point3D ratio = new Point3D(0.8,0.8,0.8);
     public Sphere view;
     ArrayList<MatrixPoint3D> neighbours;
 
