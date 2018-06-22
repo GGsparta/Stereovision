@@ -4,6 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import View.View3D?>
+<?import javafx.scene.image.ImageView?>
 <SplitPane fx:id="root" dividerPositions="0.29797979797979796" prefHeight="637.0" prefWidth="847.0"
            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
    <AnchorPane maxWidth="400.0" minWidth="150.0" prefWidth="200.0" style="-fx-background-color: #EEE;">
@@ -49,6 +50,10 @@
          <Label fx:id="firstimageid" layoutX="35.0" layoutY="18.0" text="First image preview : "/>
          <Label fx:id="secondimageid" layoutX="315.0" layoutY="18.0" text="Second image preview : "/>
          <View3D fx:id="resultspane" layoutX="24.0" layoutY="300.0" /><!--prefHeight="326.0" prefWidth="552.0"!-->
+         <VBox fx:id="loadingpane" visible="false" layoutX="24.0" layoutY="300.0" prefWidth="125" prefHeight="125" spacing="20" alignment="CENTER" style="-fx-background-color: white; -fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 5px;">
+            <ImageView fx:id="load_gif" fitWidth="40" fitHeight="40"/>
+            <Label fx:id="load_text" textAlignment="CENTER"/>
+         </VBox>
          <Label layoutX="10.0" layoutY="300.0" text="Results Preview : "/>
       </Pane>
    </AnchorPane>

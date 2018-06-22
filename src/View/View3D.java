@@ -47,10 +47,10 @@ public class View3D extends StackPane {
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(25),
                 event -> {
-                    if (moving[0]) rx.setAngle(min(rx.getAngle() + rotateSpeed,100));
-                    if (moving[1]) ry.setAngle(min(ry.getAngle() + rotateSpeed,100));
-                    if (moving[2]) rx.setAngle(max(rx.getAngle() - rotateSpeed,-100));
-                    if (moving[3]) ry.setAngle(max(ry.getAngle() - rotateSpeed,-100));
+                    if (moving[0]) rx.setAngle(min(rx.getAngle() + rotateSpeed,89));
+                    if (moving[1]) ry.setAngle(min(ry.getAngle() + rotateSpeed,89));
+                    if (moving[2]) rx.setAngle(max(rx.getAngle() - rotateSpeed,-89));
+                    if (moving[3]) ry.setAngle(max(ry.getAngle() - rotateSpeed,-89));
                 })
         );
         timeline.setCycleCount(Animation.INDEFINITE);

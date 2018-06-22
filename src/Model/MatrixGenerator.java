@@ -1,8 +1,10 @@
 package Model;
 
 
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
@@ -39,6 +41,8 @@ public class MatrixGenerator {
     */private int pace/*                Pace            */=20;/*
     */
     private int windowSize = 3; // (3x3 window)
+    private StringProperty progress;
+    int index_progress;
 
     public MatrixGenerator() {
         pixelPairs = new HashMap<>();
@@ -55,7 +59,10 @@ public class MatrixGenerator {
         return ipL.getWidth()== ipR.getWidth() && ipL.getHeight()== ipR.getHeight();
     }
 
-    public Matrix computeMatrix() {
+    public Matrix computeMatrix(StringProperty progessDisplay) {
+        this.progress = progessDisplay;
+        index_progress = 0;
+
         ouputMatrix = new Matrix();
         /*
         Steps:    https://www.irit.fr/~Jean-Denis.Durou/ENSEIGNEMENT/VISION/COURS/co03.html
@@ -98,6 +105,7 @@ public class MatrixGenerator {
                         //if (abs(iL-i)>400 || iL<0) return;
 
                         syncronisedPointInsertion(iR, i, finalJ, lastIrFound);
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -164,6 +172,8 @@ public class MatrixGenerator {
                 bestDiff=diff;
                 bestIndex = ie;
             }
+
+            updateProgress();
         }
 
         return bestIndex;
@@ -210,5 +220,13 @@ public class MatrixGenerator {
         alpha = 2 * atan(
                 (P.getX()*(I.getKey().getX()- I.getValue().getX())) / (P.getZ()*(I.getKey().getX()+ I.getValue().getX()))
         );
+    }
+
+    private synchronized void updateProgress() {
+        index_progress++;
+        if(progress==null) return;
+        int p = index_progress*pace*pace*96/((imagesSize.y-windowSize)*(imagesSize.x-windowSize)*(imagesSize.x-windowSize));
+        int old = (index_progress-1)*pace*pace*96/((imagesSize.y-windowSize)*(imagesSize.x-windowSize)*(imagesSize.x-windowSize));
+        if(old!=p) Platform.runLater(()->progress.set(min(p,100)+"%\n"+pixelPairs.size()+" points found"));
     }
 }

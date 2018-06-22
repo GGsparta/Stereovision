@@ -28,6 +28,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.CullFace;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
@@ -51,6 +52,9 @@ public class Controller implements Initializable {
     public Label secondimageid;
     public View3D resultspane;
     public SplitPane root;
+    public VBox loadingpane;
+    public ImageView load_gif;
+    public Label load_text;
     @FXML
     private Label firstimagepath;
     @FXML
@@ -165,6 +169,7 @@ public class Controller implements Initializable {
     }
 
     public void SaveAction(ActionEvent event) {
+        resultspane.getChildren().clear();
         savebutton.setDisable(true);
         System.out.println("Saving began");
         Image image1 = new Image("file:///" + firstPath);
@@ -177,6 +182,7 @@ public class Controller implements Initializable {
         iv1.setFitWidth(200);
         iv1.setFitHeight(200);
         secondimagepreview.getChildren().addAll(iv1);
+        loadingpane.setVisible(true);
 
 
         new Thread(() -> {
@@ -187,7 +193,7 @@ public class Controller implements Initializable {
             HashMap<Point_dt,MatrixPoint3D> points_dts = new HashMap<>();
 
             double minX = Double.MAX_VALUE,minY = Double.MAX_VALUE,maxX = Double.MIN_VALUE,maxY = Double.MIN_VALUE;
-            var matrix = matrixGenerator.computeMatrix();
+            var matrix = matrixGenerator.computeMatrix(load_text.textProperty());
             for (MatrixPoint3D point : matrix) {
                 if(point.getX()<minX) minX = point.getX();
                 if(point.getX()>maxX) maxX = point.getX();
@@ -271,7 +277,6 @@ public class Controller implements Initializable {
 
             Platform.runLater(()->{
                 var img3dView = new MeshView(image3D);
-                img3dView.setDrawMode(DrawMode.FILL);
                 img3dView.setMaterial(new PhongMaterial(Color.WHITE,image1,null,null,null));
                 resultspane.getChildren().add(0,img3dView);
 
@@ -286,6 +291,7 @@ public class Controller implements Initializable {
             resultspane.setPrefSize(maxX-minX,maxY-minY);
             savebutton.setDisable(false);
             System.out.println("Process finished!");
+            loadingpane.setVisible(false);
         }).start();
     }
 
@@ -309,5 +315,7 @@ public class Controller implements Initializable {
                 case LEFT:  case Q: resultspane.moving[3] = false; break;
             }
         });
+
+        load_gif.setImage(new Image("Assets/Images/loader.gif"));
     }
 }
