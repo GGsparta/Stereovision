@@ -29,16 +29,16 @@ public class View3D extends StackPane {
         getTransforms().clear();
         getTransforms().addAll(rx,ry);
 
-        //setTranslateY(-cm.getY());
-        //setTranslateX(-cm.getX());
 
         widthProperty().addListener((observable, oldValue, newValue) -> {
-            rx.setPivotX(newValue.doubleValue());
-            ry.setPivotX(newValue.doubleValue());
+            rx.setPivotX(newValue.doubleValue()*3/4);
+            ry.setPivotX(newValue.doubleValue()*2.5/4);
+            setTranslateX(-newValue.doubleValue()/6);
         });
         heightProperty().addListener((observable, oldValue, newValue) -> {
-            rx.setPivotY(newValue.doubleValue());
-            ry.setPivotY(newValue.doubleValue());
+            rx.setPivotY(newValue.doubleValue()*3/4);
+            ry.setPivotY(newValue.doubleValue()*2.5/4);
+            setTranslateY(-newValue.doubleValue()/3);
         });
 
         rx.setAngle(0);
@@ -49,10 +49,10 @@ public class View3D extends StackPane {
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(25),
                 event -> {
-                    if (moving[0]) rx.setAngle(min(rx.getAngle() + rotateSpeed,90));
-                    if (moving[1]) ry.setAngle(min(ry.getAngle() + rotateSpeed,90));
-                    if (moving[2]) rx.setAngle(max(rx.getAngle() - rotateSpeed,-90));
-                    if (moving[3]) ry.setAngle(max(ry.getAngle() - rotateSpeed,-90));
+                    if (moving[0]) rx.setAngle(min(rx.getAngle() + rotateSpeed,90-rotateSpeed));
+                    if (moving[1]) ry.setAngle(min(ry.getAngle() + rotateSpeed,90-rotateSpeed));
+                    if (moving[2]) rx.setAngle(max(rx.getAngle() - rotateSpeed,-90+rotateSpeed));
+                    if (moving[3]) ry.setAngle(max(ry.getAngle() - rotateSpeed,-90+rotateSpeed));
                 })
         );
         timeline.setCycleCount(Animation.INDEFINITE);
