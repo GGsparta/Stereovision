@@ -1,20 +1,29 @@
 package Controller;
 
 import Magic.ResizeHeightTranslation;
+import Model.MatrixGenerator;
+import Model.MatrixPoint3D;
+import View.View3D;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 
 import javafx.scene.image.ImageView;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.util.Observable;
@@ -27,6 +36,10 @@ import javafx.util.Duration;
 public class Controller implements Initializable {
 
 
+    public Label firstimageid;
+    public Label secondimageid;
+    public View3D resultspane;
+    public SplitPane root;
     @FXML
     private Label firstimagepath;
     @FXML
@@ -47,9 +60,9 @@ public class Controller implements Initializable {
     private Button morebutton;
     @FXML
     private Pane transitionpane;
-    ObservableList<String> list = FXCollections.observableArrayList("Filter1", "Filter2", "Filter3", "Filter4");
-    private String firstPath;
-    private String secondPath;
+    private ObservableList<String> list = FXCollections.observableArrayList("Filter1", "Filter2", "Filter3", "Filter4");
+    private String firstPath = "D:\\yoyo6\\Documents\\UTBM\\Stereovision\\examples\\MILITARY_LEFT.jpg"; // TODO remove init test path
+    private String secondPath = "D:\\yoyo6\\Documents\\UTBM\\Stereovision\\examples\\MILITARY_RIGHT.jpg"; // TODO remove init test path
 
     public void Button1Action(ActionEvent event) {
         // Image imageToImplement;
@@ -141,22 +154,61 @@ public class Controller implements Initializable {
     }
 
     public void SaveAction(ActionEvent event) {
+        savebutton.setDisable(true);
         System.out.println("Saving began");
-        Image image = new Image("file:///" + firstPath);
-        ImageView iv = new ImageView(image);
+        Image image1 = new Image("file:///" + firstPath);
+        ImageView iv = new ImageView(image1);
         iv.setFitHeight(200);
         iv.setFitWidth(200);
         firstimagepreview.getChildren().addAll(iv);
-        Image image1 = new Image("file:///" + secondPath);
-        ImageView iv1 = new ImageView(image1);
+        Image image2 = new Image("file:///" + secondPath);
+        ImageView iv1 = new ImageView(image2);
         iv1.setFitWidth(200);
         iv1.setFitHeight(200);
         secondimagepreview.getChildren().addAll(iv1);
 
+
+        new Thread(() -> {
+            MatrixGenerator matrixGenerator = new MatrixGenerator();
+            if (!matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null), SwingFXUtils.fromFXImage(image2, null)))
+                return;
+
+            double minX = Double.MAX_VALUE,minY = Double.MAX_VALUE,maxX = Double.MIN_VALUE,maxY = Double.MIN_VALUE;
+            for (MatrixPoint3D point : matrixGenerator.computeMatrix()) {
+                if(point.getX()<minX) minX = point.getX();
+                if(point.getX()>maxX) maxX = point.getX();
+                if(point.getY()<minY) minY = point.getY();
+                if(point.getY()>maxY) maxY = point.getY();
+                Platform.runLater(() -> {
+                    resultspane.getChildren().add(point.view);
+                    System.out.println("Added point (" + point.getX() + "," + point.getY() + "," + point.getZ() + ")");
+                });
+            }
+            resultspane.setPrefSize(maxX-minX,maxY-minY);
+            savebutton.setDisable(true);
+            System.out.println("Process finished!");
+        }).start();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         filtercombo.setItems(list);
+
+        root.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case UP:    case Z: resultspane.moving[0] = true; break;
+                case RIGHT: case D: resultspane.moving[1] = true; break;
+                case DOWN:  case S: resultspane.moving[2] = true; break;
+                case LEFT:  case Q: resultspane.moving[3] = true; break;
+            }
+        });
+        root.setOnKeyReleased(event -> {
+            switch (event.getCode()) {
+                case UP:    case Z: resultspane.moving[0] = false; break;
+                case RIGHT: case D: resultspane.moving[1] = false; break;
+                case DOWN:  case S: resultspane.moving[2] = false; break;
+                case LEFT:  case Q: resultspane.moving[3] = false; break;
+            }
+        });
     }
 }
