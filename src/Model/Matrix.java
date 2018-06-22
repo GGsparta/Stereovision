@@ -6,8 +6,9 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Matrix extends ArrayList<MatrixPoint3D> { // The map contains all the matrix's points, one for each (X,Y) pair
-
+public class Matrix extends ArrayList<MatrixPoint3D> {
+    // The map contains all the matrix's points, one for each (X,Y) pair
+    public MatrixPoint3D currentPointOnEdit;
 
     /*
     The map contains all the matrix's points (X,Y,Z) this way:

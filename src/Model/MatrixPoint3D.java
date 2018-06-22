@@ -8,30 +8,48 @@ import javafx.scene.shape.Sphere;
 
 import java.util.ArrayList;
 
-public class MatrixPoint3D extends Point3D {
+public class MatrixPoint3D {
     public final static Point3D ratio = new Point3D(0.8,0.8,0.8);
+    private final Color color;
     public Sphere view;
+    private double x, y, z;
     ArrayList<MatrixPoint3D> neighbours;
 
     MatrixPoint3D(double x, double y, double z, Color color) {
-        super(x,y,z);
-        view = new Sphere(1.5);
-        view.setMaterial(new PhongMaterial(color));
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        view = new Sphere(3);
+        this.color = color;
+        view.setMaterial(new PhongMaterial(this.color));
         actualizeView();
+
+        view.setOnMouseEntered(event -> view.setRadius(8));
+        view.setOnMouseExited(event -> view.setRadius(3));
     }
 
     public void setPosition(double x, double y, double z) {
-        add(
-                x-getX(),
-                y-getY(),
-                z-getZ()
-        );
+        this.x = x;
+        this.y = y;
+        this.z = z;
         actualizeView();
     }
 
     private void actualizeView() {
-        view.setTranslateX(getX()*ratio.getX());
-        view.setTranslateY(getY()*ratio.getY());
-        view.setTranslateZ(getZ()*ratio.getZ());
+        view.setTranslateX(x*ratio.getX());
+        view.setTranslateY(y*ratio.getY());
+        view.setTranslateZ(z*ratio.getZ());
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getZ() {
+        return z;
     }
 }
