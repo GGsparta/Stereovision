@@ -349,7 +349,7 @@ public class Controller implements Initializable {
         ((Pane) firstimagepreview.getParent().getParent()).widthProperty().addListener((observable, oldValue, newValue) -> {
             firstimagepreview.setMinWidth(newValue.doubleValue() / 2);
             secondimagepreview.setMinWidth(newValue.doubleValue() / 2);
-            System.out.println(newValue.doubleValue());
+            ((StackPane)resultspane.getParent()).setMinWidth(newValue.doubleValue());
         });
         ((Pane) resultspane.getParent().getParent().getParent()).heightProperty().addListener((observable, oldValue, newValue) -> {
             ((StackPane)resultspane.getParent()).setMinHeight(newValue.doubleValue()-200);
