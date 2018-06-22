@@ -31,12 +31,14 @@ public class View3D extends StackPane {
 
 
         widthProperty().addListener((observable, oldValue, newValue) -> {
-            rx.setPivotX(newValue.doubleValue());
-            ry.setPivotX(newValue.doubleValue());
+            rx.setPivotX(newValue.doubleValue()*3/4);
+            ry.setPivotX(newValue.doubleValue()*2.5/4);
+            setTranslateX(-newValue.doubleValue()/6);
         });
         heightProperty().addListener((observable, oldValue, newValue) -> {
-            rx.setPivotY(newValue.doubleValue());
-            ry.setPivotY(newValue.doubleValue());
+            rx.setPivotY(newValue.doubleValue()*3/4);
+            ry.setPivotY(newValue.doubleValue()*2.5/4);
+            setTranslateY(-newValue.doubleValue()/3);
         });
 
         rx.setAngle(0);

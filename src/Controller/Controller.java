@@ -173,15 +173,20 @@ public class Controller implements Initializable {
         savebutton.setDisable(true);
         System.out.println("Saving began");
         Image image1 = new Image("file:///" + firstPath);
-        ImageView iv = new ImageView(image1);
-        iv.setFitHeight(200);
-        iv.setFitWidth(200);
-        firstimagepreview.getChildren().addAll(iv);
+        ImageView iv1 = new ImageView(image1);
+        iv1.setPreserveRatio(true);
+        if(image1.getHeight()>image1.getWidth()) iv1.setFitHeight(200);
+        else iv1.setFitWidth(200);
+        firstimagepreview.getChildren().clear();
+        firstimagepreview.getChildren().addAll(iv1);
+
         Image image2 = new Image("file:///" + secondPath);
-        ImageView iv1 = new ImageView(image2);
-        iv1.setFitWidth(200);
-        iv1.setFitHeight(200);
-        secondimagepreview.getChildren().addAll(iv1);
+        ImageView iv2 = new ImageView(image2);
+        iv2.setPreserveRatio(true);
+        if(image2.getHeight()>image2.getWidth()) iv2.setFitHeight(200);
+        else iv2.setFitWidth(200);
+        secondimagepreview.getChildren().clear();
+        secondimagepreview.getChildren().addAll(iv2);
         loadingpane.setVisible(true);
 
 
@@ -229,7 +234,6 @@ public class Controller implements Initializable {
                 points[3*i+1] = (float) matrix.get(i).getY();
                 points[3*i+2] = (float) matrix.get(i).getZ();
             }
-            System.out.println("size:"+d.size()+", "+d.trianglesSize());
             var it = d.trianglesIterator();
             while(it.hasNext()) {
                 Triangle_dt t = it.next();
@@ -280,13 +284,13 @@ public class Controller implements Initializable {
                 img3dView.setMaterial(new PhongMaterial(Color.WHITE,image1,null,null,null));
                 resultspane.getChildren().add(0,img3dView);
 
-                var  cm = new Point2D(117, 172);
                 img3dView.setScaleX(MatrixPoint3D.ratio.getX());
                 img3dView.setScaleY(MatrixPoint3D.ratio.getY());
                 img3dView.setTranslateY(img3dView.boundsInParentProperty().get().getHeight()/2);
                 img3dView.setTranslateX(img3dView.boundsInParentProperty().get().getWidth()/2);
-                resultspane.setTranslateY(-cm.getY());
-                resultspane.setTranslateX(-cm.getX());
+                //var  cm = new Point2D(117, 172);
+                //resultspane.setTranslateY(-cm.getY());
+                //resultspane.setTranslateX(-cm.getX());
             });
             resultspane.setPrefSize(maxX-minX,maxY-minY);
             savebutton.setDisable(false);
@@ -301,21 +305,54 @@ public class Controller implements Initializable {
 
         root.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case UP:    case Z: resultspane.moving[0] = true; break;
-                case RIGHT: case D: resultspane.moving[1] = true; break;
-                case DOWN:  case S: resultspane.moving[2] = true; break;
-                case LEFT:  case Q: resultspane.moving[3] = true; break;
+                case UP:
+                case Z:
+                    resultspane.moving[0] = true;
+                    break;
+                case RIGHT:
+                case D:
+                    resultspane.moving[1] = true;
+                    break;
+                case DOWN:
+                case S:
+                    resultspane.moving[2] = true;
+                    break;
+                case LEFT:
+                case Q:
+                    resultspane.moving[3] = true;
+                    break;
             }
         });
         root.setOnKeyReleased(event -> {
             switch (event.getCode()) {
-                case UP:    case Z: resultspane.moving[0] = false; break;
-                case RIGHT: case D: resultspane.moving[1] = false; break;
-                case DOWN:  case S: resultspane.moving[2] = false; break;
-                case LEFT:  case Q: resultspane.moving[3] = false; break;
+                case UP:
+                case Z:
+                    resultspane.moving[0] = false;
+                    break;
+                case RIGHT:
+                case D:
+                    resultspane.moving[1] = false;
+                    break;
+                case DOWN:
+                case S:
+                    resultspane.moving[2] = false;
+                    break;
+                case LEFT:
+                case Q:
+                    resultspane.moving[3] = false;
+                    break;
             }
         });
 
         load_gif.setImage(new Image("Assets/Images/loader.gif"));
+
+        ((Pane) firstimagepreview.getParent().getParent()).widthProperty().addListener((observable, oldValue, newValue) -> {
+            firstimagepreview.setMinWidth(newValue.doubleValue() / 2);
+            secondimagepreview.setMinWidth(newValue.doubleValue() / 2);
+            System.out.println(newValue.doubleValue());
+        });
+        ((Pane) resultspane.getParent().getParent().getParent()).heightProperty().addListener((observable, oldValue, newValue) -> {
+            ((StackPane)resultspane.getParent()).setMinHeight(newValue.doubleValue()-200);
+        });
     }
 }
