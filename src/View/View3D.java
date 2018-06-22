@@ -53,7 +53,6 @@ public class View3D extends StackPane {
                     if (moving[1]) ry.setAngle(min(ry.getAngle() + rotateSpeed,90-rotateSpeed));
                     if (moving[2]) rx.setAngle(max(rx.getAngle() - rotateSpeed,-90+rotateSpeed));
                     if (moving[3]) ry.setAngle(max(ry.getAngle() - rotateSpeed,-90+rotateSpeed));
-                    System.out.println(ry.angleProperty());
                 })
         );
         timeline.setCycleCount(Animation.INDEFINITE);
