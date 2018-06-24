@@ -156,7 +156,7 @@ public class Controller implements Initializable {
         xf = new TextField("0");
         xf.setMaxWidth(30);
         xf.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(matrix!=null && matrix.currentPointOnEdit!=null) {
+            if (matrix != null && matrix.currentPointOnEdit != null) {
                 matrix.currentPointOnEdit.setPosition(
                         Double.parseDouble(newValue),
                         matrix.currentPointOnEdit.getY(),
@@ -168,7 +168,7 @@ public class Controller implements Initializable {
         yf = new TextField("0");
         yf.setMaxWidth(30);
         yf.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(matrix!=null && matrix.currentPointOnEdit!=null) {
+            if (matrix != null && matrix.currentPointOnEdit != null) {
                 matrix.currentPointOnEdit.setPosition(
                         matrix.currentPointOnEdit.getX(),
                         Double.parseDouble(newValue),
@@ -180,7 +180,7 @@ public class Controller implements Initializable {
         zf = new TextField("0");
         zf.setMaxWidth(30);
         zf.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(matrix!=null && matrix.currentPointOnEdit!=null) {
+            if (matrix != null && matrix.currentPointOnEdit != null) {
                 matrix.currentPointOnEdit.setPosition(
                         matrix.currentPointOnEdit.getX(),
                         matrix.currentPointOnEdit.getY(),
@@ -217,7 +217,7 @@ public class Controller implements Initializable {
         image1 = new Image("file:///" + firstPath);
         ImageView iv1 = new ImageView(image1);
         iv1.setPreserveRatio(true);
-        if(image1.getHeight()> image1.getWidth()) iv1.setFitHeight(200);
+        if (image1.getHeight() > image1.getWidth()) iv1.setFitHeight(200);
         else iv1.setFitWidth(200);
         firstimagepreview.getChildren().clear();
         firstimagepreview.getChildren().addAll(iv1);
@@ -225,53 +225,71 @@ public class Controller implements Initializable {
         Image image2 = new Image("file:///" + secondPath);
         ImageView iv2 = new ImageView(image2);
         iv2.setPreserveRatio(true);
-        if(image2.getHeight()>image2.getWidth()) iv2.setFitHeight(200);
+        if (image2.getHeight() > image2.getWidth()) iv2.setFitHeight(200);
         else iv2.setFitWidth(200);
         secondimagepreview.getChildren().clear();
         secondimagepreview.getChildren().addAll(iv2);
         loadingpane.setVisible(true);
 
-
-        new Thread(() -> {
-            MatrixGenerator matrixGenerator = new MatrixGenerator();
-            if (!matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null), SwingFXUtils.fromFXImage(image2, null)))
-                return;
-
-
-            matrix = matrixGenerator.computeMatrix(load_text.textProperty());
+        try {
+            new Thread(() -> {
+                MatrixGenerator matrixGenerator = new MatrixGenerator();
+                if (!matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null), SwingFXUtils.fromFXImage(image2, null)))
+                    return;
 
 
-            System.out.println("Creating surface...");
-            image3D = new TriangleMesh();
+                matrix = matrixGenerator.computeMatrix(load_text.textProperty());
 
-            refresh3DPictureSurface();
 
-            savebutton.setDisable(false);
-            System.out.println("Process finished!");
-            loadingpane.setVisible(false);
-        }).start();
+                System.out.println("Creating surface...");
+                image3D = new TriangleMesh();
+
+                refresh3DPictureSurface();
+
+                savebutton.setDisable(false);
+                System.out.println("Process finished!");
+                loadingpane.setVisible(false);
+            }).start();
+        } catch (NullPointerException ex) {
+            System.out.println(ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Images non trouvé");
+            alert.setContentText("aucune image détéctée");
+
+            alert.showAndWait();
+
+        } catch (Exception e) {
+            System.out.println(e);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Erreur produite");
+            alert.setContentText("erreur lors de l'éxécution du programme.");
+
+            alert.showAndWait();
+        }
     }
 
     private void refresh3DPictureSurface() {
         Platform.runLater(() -> resultspane.getChildren().clear());
-        double minX = Double.MAX_VALUE,minY = Double.MAX_VALUE,maxX = Double.MIN_VALUE,maxY = Double.MIN_VALUE;
-        HashMap<Point_dt,MatrixPoint3D> points_dts = new HashMap<>();
+        double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE, maxX = Double.MIN_VALUE, maxY = Double.MIN_VALUE;
+        HashMap<Point_dt, MatrixPoint3D> points_dts = new HashMap<>();
         for (MatrixPoint3D point : matrix) {
-            if(point.getX()<minX) minX = point.getX();
-            if(point.getX()>maxX) maxX = point.getX();
-            if(point.getY()<minY) minY = point.getY();
-            if(point.getY()>maxY) maxY = point.getY();
+            if (point.getX() < minX) minX = point.getX();
+            if (point.getX() > maxX) maxX = point.getX();
+            if (point.getY() < minY) minY = point.getY();
+            if (point.getY() > maxY) maxY = point.getY();
 
             Platform.runLater(() -> {
                 resultspane.getChildren().add(point.view);
                 point.view.setOnMouseClicked(event1 -> {
-                    xf.setText(point.getX()+"");
-                    yf.setText(point.getY()+"");
-                    zf.setText(point.getZ()+"");
+                    xf.setText(point.getX() + "");
+                    yf.setText(point.getY() + "");
+                    zf.setText(point.getZ() + "");
                     matrix.currentPointOnEdit = point;
                 });
             });
-            points_dts.put(new Point_dt(point.getX(),point.getY()),point);
+            points_dts.put(new Point_dt(point.getX(), point.getY()), point);
 
         }
         Delaunay_Triangulation d = new Delaunay_Triangulation(points_dts.keySet().toArray(new Point_dt[0]));
@@ -279,22 +297,22 @@ public class Controller implements Initializable {
 
         HashMap<MatrixPoint3D, Integer> point_indexes = new HashMap<>();
 
-        float[] textures = new float[matrix.size()*2],
-                points = new float[matrix.size()*3];
+        float[] textures = new float[matrix.size() * 2],
+                points = new float[matrix.size() * 3];
         ObservableIntegerArray faces = FXCollections.observableIntegerArray();
 
         for (int i = 0; i < matrix.size(); i++) {
             point_indexes.put(matrix.get(i), i);
-            textures[2*i] =
+            textures[2 * i] =
                     (float) ((matrix.get(i).getX() - minX) / (maxX - minX));
-            textures[2*i+1] =
+            textures[2 * i + 1] =
                     (float) ((matrix.get(i).getY() - minY) / (maxY - minY));
-            points[3*i] = (float) matrix.get(i).getX();
-            points[3*i+1] = (float) matrix.get(i).getY();
-            points[3*i+2] = (float) matrix.get(i).getZ();
+            points[3 * i] = (float) matrix.get(i).getX();
+            points[3 * i + 1] = (float) matrix.get(i).getY();
+            points[3 * i + 2] = (float) matrix.get(i).getZ();
         }
         Iterator<Triangle_dt> it = d.trianglesIterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Triangle_dt t = it.next();
             if (t.p3() == null) continue;
             MatrixPoint3D
@@ -315,18 +333,18 @@ public class Controller implements Initializable {
         image3D.getPoints().addAll(points);
         image3D.getFaces().addAll(faces);
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             MeshView img3dView = new MeshView(image3D);
-            img3dView.setMaterial(new PhongMaterial(Color.WHITE,image1,null,null,null));
-            resultspane.getChildren().add(0,img3dView);
+            img3dView.setMaterial(new PhongMaterial(Color.WHITE, image1, null, null, null));
+            resultspane.getChildren().add(0, img3dView);
 
             img3dView.setScaleX(MatrixPoint3D.ratio.getX());
             img3dView.setScaleY(MatrixPoint3D.ratio.getY());
-            img3dView.setTranslateY(img3dView.boundsInParentProperty().get().getHeight()/2);
-            img3dView.setTranslateX(img3dView.boundsInParentProperty().get().getWidth()/2);
+            img3dView.setTranslateY(img3dView.boundsInParentProperty().get().getHeight() / 2);
+            img3dView.setTranslateX(img3dView.boundsInParentProperty().get().getWidth() / 2);
         });
 
-        resultspane.setPrefSize(maxX-minX,maxY-minY);
+        resultspane.setPrefSize(maxX - minX, maxY - minY);
     }
 
     @Override
@@ -381,17 +399,17 @@ public class Controller implements Initializable {
         grid_white.setImage(new Image("Assets/Images/grid_white.png"));
 
         root.getStylesheets().add("View/style.css");
-        for(Node node : root.lookupAll(".button, .combo-box"))
+        for (Node node : root.lookupAll(".button, .combo-box"))
             node.focusedProperty().addListener((observable, oldValue, newValue) -> root.requestFocus());
 
 
         ((Pane) firstimagepreview.getParent().getParent()).widthProperty().addListener((observable, oldValue, newValue) -> {
             firstimagepreview.setMinWidth(newValue.doubleValue() / 2);
             secondimagepreview.setMinWidth(newValue.doubleValue() / 2);
-            ((StackPane)resultspane.getParent()).setMinWidth(newValue.doubleValue());
+            ((StackPane) resultspane.getParent()).setMinWidth(newValue.doubleValue());
         });
         ((Pane) resultspane.getParent().getParent().getParent()).heightProperty().addListener((observable, oldValue, newValue) -> {
-            ((StackPane)resultspane.getParent()).setMinHeight(newValue.doubleValue()-200);
+            ((StackPane) resultspane.getParent()).setMinHeight(newValue.doubleValue() - 200);
         });
     }
 }
