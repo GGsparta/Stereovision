@@ -26,14 +26,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.CullFace;
-import javafx.scene.shape.DrawMode;
-import javafx.scene.shape.MeshView;
-import javafx.scene.shape.TriangleMesh;
+import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 
 import javafx.scene.image.ImageView;
@@ -63,6 +61,8 @@ public class Controller implements Initializable {
     public ImageView eye_white;
     public ImageView grid_white;
     public ImageView grid_black;
+    public ImageView arrow_up;
+    public ImageView arrow_down;
     @FXML
     private Label firstimagepath;
     @FXML
@@ -92,6 +92,7 @@ public class Controller implements Initializable {
     private Matrix matrix;
     private TriangleMesh image3D;
     private Image image1;
+    private boolean editMode;
 
     public void Button1Action(ActionEvent event) {
         // Image imageToImplement;
@@ -142,19 +143,16 @@ public class Controller implements Initializable {
         }
     }
 
-    public void MoreAction(ActionEvent event) {
-        HBox hbox = new HBox();
-        Pane spacer = new Pane();
-
-        GridPane more = new GridPane();
-        more.setMaxHeight(300);
-        more.setMinHeight(100);
+    public void InitEditMode() {
         Label x = new Label("X :");
         Label y = new Label("Y :");
         Label z = new Label("Z :");
+        x.setMinWidth(22);
+        y.setMinWidth(22);
+        z.setMinWidth(22);
 
         xf = new TextField("0");
-        xf.setMaxWidth(30);
+        xf.setPrefWidth(1000);
         xf.textProperty().addListener((observable, oldValue, newValue) -> {
             if(matrix!=null && matrix.currentPointOnEdit!=null) {
                 matrix.currentPointOnEdit.setPosition(
@@ -166,7 +164,7 @@ public class Controller implements Initializable {
             }
         });
         yf = new TextField("0");
-        yf.setMaxWidth(30);
+        yf.setPrefWidth(1000);
         yf.textProperty().addListener((observable, oldValue, newValue) -> {
             if(matrix!=null && matrix.currentPointOnEdit!=null) {
                 matrix.currentPointOnEdit.setPosition(
@@ -178,7 +176,7 @@ public class Controller implements Initializable {
             }
         });
         zf = new TextField("0");
-        zf.setMaxWidth(30);
+        zf.setPrefWidth(1000);
         zf.textProperty().addListener((observable, oldValue, newValue) -> {
             if(matrix!=null && matrix.currentPointOnEdit!=null) {
                 matrix.currentPointOnEdit.setPosition(
@@ -190,15 +188,18 @@ public class Controller implements Initializable {
             }
         });
 
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        hbox.setAlignment(Pos.CENTER);
-        hbox.setSpacing(3);
-        hbox.getChildren().addAll(x, xf, y, yf, z, zf);
+        xf.setDisable(true);
+        yf.setDisable(true);
+        zf.setDisable(true);
 
-        more.getChildren().addAll(hbox);
+
+        HBox xb = new HBox(10,x,xf);
+        HBox yb = new HBox(10,y,yf);
+        HBox zb = new HBox(10,z,zf);
+
         //more.setStyle("-fx-background-color: #000000");
 
-        ResizeHeightTranslation rht = new ResizeHeightTranslation(Duration.millis(1000), transitionpane, more.getMinHeight());
+        /*ResizeHeightTranslation rht = new ResizeHeightTranslation(Duration.millis(1000), transitionpane, more.getMinHeight());
 
         FadeTransition ft = new FadeTransition(Duration.millis(1000), more);
         ft.setFromValue(0);
@@ -206,9 +207,10 @@ public class Controller implements Initializable {
 
         SequentialTransition pt = new SequentialTransition(rht, ft);
 
-        pt.play();
-        more.setAlignment(Pos.CENTER);
-        transitionpane.getChildren().add(more);
+        pt.play();*/
+        transitionpane.getChildren().addAll(xb,yb,zb);
+
+
     }
 
     public void SaveAction(ActionEvent event) {
@@ -379,19 +381,30 @@ public class Controller implements Initializable {
         eye_white.setImage(new Image("Assets/Images/eye_white.png"));
         grid_black.setImage(new Image("Assets/Images/grid_black.png"));
         grid_white.setImage(new Image("Assets/Images/grid_white.png"));
+        arrow_up.setImage(new Image("Assets/Images/arrow.png"));
+        arrow_up.setScaleY(-1);
+        arrow_down.setImage(new Image("Assets/Images/arrow.png"));
 
         root.getStylesheets().add("View/style.css");
-        for(Node node : root.lookupAll(".button, .combo-box"))
+        for (Node node : root.lookupAll(".button, .combo-box"))
             node.focusedProperty().addListener((observable, oldValue, newValue) -> root.requestFocus());
 
 
         ((Pane) firstimagepreview.getParent().getParent()).widthProperty().addListener((observable, oldValue, newValue) -> {
             firstimagepreview.setMinWidth(newValue.doubleValue() / 2);
             secondimagepreview.setMinWidth(newValue.doubleValue() / 2);
-            ((StackPane)resultspane.getParent()).setMinWidth(newValue.doubleValue());
+            ((StackPane) resultspane.getParent()).setMinWidth(newValue.doubleValue());
         });
         ((Pane) resultspane.getParent().getParent().getParent()).heightProperty().addListener((observable, oldValue, newValue) -> {
-            ((StackPane)resultspane.getParent()).setMinHeight(newValue.doubleValue()-200);
+            ((StackPane) resultspane.getParent()).setMinHeight(newValue.doubleValue() - 200);
         });
+
+        InitEditMode();
+    }
+
+    public void SwitchMode(MouseEvent mouseEvent) {
+        editMode = !editMode;
+        editmodepane.setVisible(editMode);
+        displaymodepane.setVisible(!editMode);
     }
 }

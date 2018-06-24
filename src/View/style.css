@@ -9,3 +9,17 @@
 .button:hover, .combo-box:hover{
     -fx-background-color: white;
 }
+
+.black-button {
+    -fx-padding: 20px;
+    -fx-background-color: #383838;
+}
+
+.black-button:hover {
+    -fx-background-color: #444;
+    -fx-effect: dropshadow(gaussian,black,4,0.25,0,0);
+}
+
+.black-button:hover > * {
+    -fx-fill: #444;
+}

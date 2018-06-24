@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Circle?>
 <?import View.View3D?>
-<?import javafx.scene.image.ImageView?>
 <SplitPane fx:id="root" dividerPositions="0.29797979797979796" prefHeight="637.0" prefWidth="847.0"
            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
 
@@ -57,27 +57,38 @@
                 </VBox>
             </center>
             <bottom>
-                <VBox alignment="CENTER" style="-fx-padding: 20px;-fx-background-color: #383838">
-                    <ImageView fx:id="grid_white" fitWidth="40" fitHeight="40"/>
+                <VBox alignment="TOP_CENTER" styleClass="black-button" translateY="25" onMouseClicked="#SwitchMode" scaleY="0.8">
+                    <Circle radius="15" scaleX="1.5" translateY="-28" fill="#383838"/>
+                    <ImageView fx:id="arrow_up" fitWidth="18" fitHeight="9" translateY="-46"/>
+                    <ImageView fx:id="grid_white" fitWidth="40" fitHeight="40" translateY="-21" scaleY="1.3"/>
                 </VBox>
             </bottom>
         </BorderPane>
-        <BorderPane fx:id="editmodepane" visible="false" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-                    AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
+        <BorderPane fx:id="editmodepane" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+                    AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" visible="false">
             <top>
-                <ImageView fx:id="eye_white" fitWidth="60" fitHeight="60"/>
-                <Label text="Visualisation"/>
+                <VBox alignment="TOP_CENTER" styleClass="black-button" translateY="-25" onMouseClicked="#SwitchMode" scaleY="0.8">
+                    <ImageView fx:id="eye_white" fitWidth="40" fitHeight="40" translateY="21" scaleY="1.3"/>
+                    <Circle radius="15" scaleX="1.5" translateY="38" fill="#383838"/>
+                    <ImageView fx:id="arrow_down" fitWidth="18" fitHeight="9" translateY="20"/>
+                </VBox>
             </top>
             <center>
-                <Separator layoutX="3.0" layoutY="37.0" prefHeight="17.0" prefWidth="68.0"/>
-                <Button fx:id="morebutton" layoutX="99.0" layoutY="563.0" mnemonicParsing="false" onAction="#MoreAction"
-                        text="More..."/>
-                <Separator layoutX="-1.0" layoutY="301.0" prefHeight="17.0" prefWidth="85.0"/>
-                <Pane fx:id="transitionpane" layoutX="31.0" layoutY="421.0" prefHeight="112.0" prefWidth="112.0"/>
-                <Separator layoutX="-1.0" layoutY="301.0" prefHeight="17.0" prefWidth="85.0"/>
+                <VBox alignment="CENTER" translateY="-15" style="-fx-padding: 10px">
+                            <HBox alignment="CENTER" translateY="-8">
+                                <Separator prefWidth="200"/>
+                                <Label text="Effets" minWidth="70"
+                                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-alignment: center;"/>
+                                <Separator prefWidth="200"/>
+                            </HBox>
+                            <VBox fx:id="transitionpane" translateY="-5" prefWidth="112.0" spacing="5"/>
+                </VBox>
             </center>
             <bottom>
-                <ImageView fx:id="grid_black" fitWidth="75" fitHeight="75"/>
+                <VBox alignment="CENTER" style="-fx-padding: 15px" spacing="10">
+                    <ImageView fx:id="grid_black" fitWidth="75" fitHeight="75"/>
+                    <Label text="Édition" translateX="-3" style="-fx-font-size: 30;"/>
+                </VBox>
             </bottom>
         </BorderPane>
     </AnchorPane>
