@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
@@ -56,6 +57,12 @@ public class Controller implements Initializable {
     public VBox loadingpane;
     public ImageView load_gif;
     public Label load_text;
+    public Pane displaymodepane;
+    public Pane editmodepane;
+    public ImageView eye_black;
+    public ImageView eye_white;
+    public ImageView grid_white;
+    public ImageView grid_black;
     @FXML
     private Label firstimagepath;
     @FXML
@@ -368,6 +375,15 @@ public class Controller implements Initializable {
         });
 
         load_gif.setImage(new Image("Assets/Images/loader.gif"));
+        eye_black.setImage(new Image("Assets/Images/eye_black.png"));
+        eye_white.setImage(new Image("Assets/Images/eye_white.png"));
+        grid_black.setImage(new Image("Assets/Images/grid_black.png"));
+        grid_white.setImage(new Image("Assets/Images/grid_white.png"));
+
+        root.getStylesheets().add("View/style.css");
+        for(Node node : root.lookupAll(".button, .combo-box"))
+            node.focusedProperty().addListener((observable, oldValue, newValue) -> root.requestFocus());
+
 
         ((Pane) firstimagepreview.getParent().getParent()).widthProperty().addListener((observable, oldValue, newValue) -> {
             firstimagepreview.setMinWidth(newValue.doubleValue() / 2);

@@ -7,68 +7,110 @@
 <?import javafx.scene.image.ImageView?>
 <SplitPane fx:id="root" dividerPositions="0.29797979797979796" prefHeight="637.0" prefWidth="847.0"
            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
-    <AnchorPane maxWidth="400.0" minWidth="150.0" prefWidth="200.0" style="-fx-background-color: #EEE;">
-        <Label layoutX="14.0" layoutY="54.0" text="First image : " AnchorPane.topAnchor="54.0"/>
-        <Button fx:id="firstimagebrowse" layoutX="82.0" layoutY="71.0" mnemonicParsing="false"
-                onAction="#Button1Action" text="Browse..."/>
-        <Label fx:id="firstimagepath" layoutX="34.0" layoutY="109.0" prefHeight="17.0" prefWidth="217.0"
-               text="PathOfImage..."/>
-        <Label layoutX="14.0" layoutY="157.0" text="Second image : "/>
-        <Button fx:id="secondimagebrowse" layoutX="87.0" layoutY="174.0" mnemonicParsing="false"
-                onAction="#Button2Action" text="Browse..."/>
-        <Label fx:id="secondimagepath" layoutX="34.0" layoutY="220.0" prefHeight="17.0" prefWidth="217.0"
-               text="PathOfImage1..."/>
-        <Separator layoutX="130.0" layoutY="301.0" prefHeight="17.0" prefWidth="112.0"/>
-        <Button fx:id="savebutton" layoutX="77.0" layoutY="269.0" mnemonicParsing="false" onAction="#SaveAction"
-                text="Save &amp; update"/>
-        <Label layoutX="87.0" layoutY="301.0" text="Filters  ">
-            <font>
-                <Font name="System Bold" size="12.0"/>
-            </font>
-        </Label>
-        <ComboBox fx:id="filtercombo" layoutX="50.0" layoutY="335.0" prefWidth="150.0" promptText="Select Filter"/>
-        <Separator layoutX="125.0" layoutY="37.0" prefHeight="17.0" prefWidth="122.0"/>
-        <Label layoutX="77.0" layoutY="37.0" text="Sources">
-            <font>
-                <Font name="System Bold" size="12.0"/>
-            </font>
-        </Label>
-        <Separator layoutX="3.0" layoutY="37.0" prefHeight="17.0" prefWidth="68.0"/>
-        <Button fx:id="morebutton" layoutX="99.0" layoutY="563.0" mnemonicParsing="false" onAction="#MoreAction"
-                text="More..."/>
-        <Pane fx:id="transitionpane" layoutX="31.0" layoutY="421.0" prefHeight="112.0" prefWidth="112.0"/>
-        <Separator layoutX="-1.0" layoutY="301.0" prefHeight="17.0" prefWidth="85.0"/>
+
+    <AnchorPane maxWidth="400.0" minWidth="200.0" prefWidth="200.0"
+                style="-fx-background-color: white;-fx-font-family: 'MV Boli'">
+        <BorderPane fx:id="displaymodepane" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+                    AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
+            <top>
+                <VBox alignment="CENTER">
+                    <ImageView fx:id="eye_black" fitWidth="75" fitHeight="75"/>
+                    <Label text="Visualisation" translateY="-15" style="-fx-font-size: 30;"/>
+                </VBox>
+            </top>
+            <center>
+                <VBox alignment="CENTER" spacing="20" translateY="-15">
+                    <VBox style="-fx-padding: 10px">
+                        <HBox alignment="CENTER" translateY="-8">
+                            <Separator prefWidth="200"/>
+                            <Label text="Sources" minWidth="80"
+                                   style="-fx-font-size: 20px; -fx-font-weight: bold;-fx-alignment: center"/>
+                            <Separator prefWidth="200"/>
+                        </HBox>
+                        <Label text="Image de gauche :" style="-fx-font-size: 16px"/>
+                        <HBox alignment="CENTER_RIGHT" spacing="10">
+                            <Label fx:id="firstimagepath" prefWidth="1000" text="Veuillez choisir une image" style="-fx-font-style: italic;-fx-padding: 4;-fx-alignment: center-right;-fx-text-overrun: leading-ellipsis;"/>
+                            <Button fx:id="firstimagebrowse" mnemonicParsing="false"
+                                    onAction="#Button1Action" text="..." />
+                        </HBox>
+                        <Label text="Image de droite : " style="-fx-font-size: 16px"/>
+                        <HBox alignment="CENTER_RIGHT" spacing="10">
+                            <Label fx:id="secondimagepath" prefWidth="1000" text="Veuillez choisir une image" style="-fx-font-style: italic;-fx-padding: 4;-fx-alignment: center-right;-fx-text-overrun: leading-ellipsis;"/>
+                            <Button fx:id="secondimagebrowse" mnemonicParsing="false" onAction="#Button2Action" text="..."/>
+                        </HBox>
+                    </VBox>
+                    <VBox style="-fx-padding: 10px" spacing="10">
+                        <HBox alignment="CENTER" translateY="-8">
+                            <Separator prefWidth="200"/>
+                            <Label text="Effets" minWidth="70"
+                                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-alignment: center;"/>
+                            <Separator prefWidth="200"/>
+                        </HBox>
+                        <AnchorPane>
+                            <Label AnchorPane.leftAnchor="0" text="Filtre :" style="-fx-font-size: 16px"/>
+                            <ComboBox AnchorPane.rightAnchor="0" fx:id="filtercombo" promptText="Choisir Filtre"/>
+                        </AnchorPane>
+                    </VBox>
+                    <VBox alignment="CENTER" style="-fx-padding: 0px 40px 0px 40px">
+                        <Button fx:id="savebutton" mnemonicParsing="false" onAction="#SaveAction" text="Actualiser" style="-fx-font-size: 17;" prefWidth="1000"/>
+                    </VBox>
+                </VBox>
+            </center>
+            <bottom>
+                <VBox alignment="CENTER" style="-fx-padding: 20px;-fx-background-color: #383838">
+                    <ImageView fx:id="grid_white" fitWidth="40" fitHeight="40"/>
+                </VBox>
+            </bottom>
+        </BorderPane>
+        <BorderPane fx:id="editmodepane" visible="false" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+                    AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
+            <top>
+                <ImageView fx:id="eye_white" fitWidth="60" fitHeight="60"/>
+                <Label text="Visualisation"/>
+            </top>
+            <center>
+                <Separator layoutX="3.0" layoutY="37.0" prefHeight="17.0" prefWidth="68.0"/>
+                <Button fx:id="morebutton" layoutX="99.0" layoutY="563.0" mnemonicParsing="false" onAction="#MoreAction"
+                        text="More..."/>
+                <Separator layoutX="-1.0" layoutY="301.0" prefHeight="17.0" prefWidth="85.0"/>
+                <Pane fx:id="transitionpane" layoutX="31.0" layoutY="421.0" prefHeight="112.0" prefWidth="112.0"/>
+                <Separator layoutX="-1.0" layoutY="301.0" prefHeight="17.0" prefWidth="85.0"/>
+            </center>
+            <bottom>
+                <ImageView fx:id="grid_black" fitWidth="75" fitHeight="75"/>
+            </bottom>
+        </BorderPane>
     </AnchorPane>
-    <AnchorPane minHeight="0.0" minWidth="0.0"
-                style="-fx-background-color: #555;">
+    <AnchorPane
+                style="-fx-background-color: #ddd">
         <VBox AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0">
             <HBox AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" alignment="CENTER"
                   minHeight="200">
                 <Pane>
                     <StackPane fx:id="firstimagepreview" style="-fx-padding:3px"/>
                     <Label fx:id="firstimageid" text="First image preview : " layoutX="10" layoutY="10"
-                           style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 5px;"/>
+                           style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;"/>
                 </Pane>
-                <Separator layoutY="27.0" orientation="VERTICAL" prefHeight="207.0" prefWidth="24.0"/>
+                <Separator layoutY="27.0" orientation="VERTICAL" style="-fx-background-color: #333"/>
                 <Pane>
                     <StackPane fx:id="secondimagepreview" style="-fx-padding:3px"/>
                     <Label fx:id="secondimageid" text="Second image preview : " layoutX="10" layoutY="10"
-                           style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 5px;"/>
+                           style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;"/>
                 </Pane>
             </HBox>
-            <Separator AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"/>
+            <Separator minHeight="4" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-background-color: #333;"/>
             <Pane AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding: 20px;">
                 <StackPane>
                     <View3D fx:id="resultspane"/><!--prefHeight="326.0" prefWidth="552.0"!-->
                     <VBox fx:id="loadingpane" visible="false" maxWidth="125" maxHeight="125"
                           spacing="20" alignment="CENTER"
-                          style="-fx-background-color: white; -fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 5px;-fx-padding: 10px">
+                          style="-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;-fx-padding: 10px">
                         <ImageView fx:id="load_gif" fitWidth="40" fitHeight="40"/>
                         <Label fx:id="load_text" textAlignment="CENTER"/>
                     </VBox>
                 </StackPane>
                 <Label text="Results Preview : " layoutX="10" layoutY="10"
-                       style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 5px;"/>
+                       style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;"/>
             </Pane>
         </VBox>
     </AnchorPane>

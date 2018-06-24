@@ -1,0 +1,11 @@
+.button, .combo-box{
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 3px;
+    -fx-border-color: #999;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+
+.button:hover, .combo-box:hover{
+    -fx-background-color: white;
+}
