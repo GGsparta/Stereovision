@@ -274,7 +274,7 @@ public class Controller implements Initializable {
 
         float[] textures = new float[matrix.size()*2],
                 points = new float[matrix.size()*3];
-        var faces = FXCollections.observableIntegerArray();
+        ObservableIntegerArray faces = FXCollections.observableIntegerArray();
 
         for (int i = 0; i < matrix.size(); i++) {
             point_indexes.put(matrix.get(i), i);
@@ -286,7 +286,7 @@ public class Controller implements Initializable {
             points[3*i+1] = (float) matrix.get(i).getY();
             points[3*i+2] = (float) matrix.get(i).getZ();
         }
-        var it = d.trianglesIterator();
+        Iterator<Triangle_dt> it = d.trianglesIterator();
         while(it.hasNext()) {
             Triangle_dt t = it.next();
             if (t.p3() == null) continue;
@@ -309,7 +309,7 @@ public class Controller implements Initializable {
         image3D.getFaces().addAll(faces);
 
         Platform.runLater(()->{
-            var img3dView = new MeshView(image3D);
+            MeshView img3dView = new MeshView(image3D);
             img3dView.setMaterial(new PhongMaterial(Color.WHITE,image1,null,null,null));
             resultspane.getChildren().add(0,img3dView);
 
