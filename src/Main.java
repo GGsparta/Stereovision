@@ -12,9 +12,9 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("View/main_window.fxml"));
         primaryStage.setTitle("Stéréovision");
         primaryStage.getIcons().add(new Image("Assets/Images/logo.png"));
-        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setScene(new Scene(root, 800, 620));
         primaryStage.setMinWidth(600);
-        primaryStage.setMinHeight(600);
+        primaryStage.setMinHeight(620);
 
 
         primaryStage.show();
