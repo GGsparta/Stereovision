@@ -13,6 +13,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableIntegerArray;
 import javafx.collections.ObservableList;
@@ -92,7 +94,8 @@ public class Controller implements Initializable {
     private Matrix matrix;
     private TriangleMesh image3D;
     private Image image1;
-    private boolean editMode;
+    private BooleanProperty editMode = new SimpleBooleanProperty(false);
+    private MeshView img3dView;
 
     public void Button1Action(ActionEvent event) {
         // Image imageToImplement;
@@ -266,11 +269,16 @@ public class Controller implements Initializable {
 
             Platform.runLater(() -> {
                 resultspane.getChildren().add(point.view);
+                if(!editMode.get()) point.view.setVisible(false);
                 point.view.setOnMouseClicked(event1 -> {
                     xf.setText(point.getX()+"");
+                    xf.setDisable(false);
                     yf.setText(point.getY()+"");
+                    yf.setDisable(false);
                     zf.setText(point.getZ()+"");
+                    zf.setDisable(false);
                     matrix.currentPointOnEdit = point;
+                    point.setSelected(true);
                 });
             });
             points_dts.put(new Point_dt(point.getX(),point.getY()),point);
@@ -318,9 +326,10 @@ public class Controller implements Initializable {
         image3D.getFaces().addAll(faces);
 
         Platform.runLater(()->{
-            var img3dView = new MeshView(image3D);
+            img3dView = new MeshView(image3D);
             img3dView.setMaterial(new PhongMaterial(Color.WHITE,image1,null,null,null));
-            resultspane.getChildren().add(0,img3dView);
+            resultspane.getChildren().add(0, img3dView);
+            if(editMode.get()) img3dView.setVisible(false);
 
             img3dView.setScaleX(MatrixPoint3D.ratio.getX());
             img3dView.setScaleY(MatrixPoint3D.ratio.getY());
@@ -403,8 +412,17 @@ public class Controller implements Initializable {
     }
 
     public void SwitchMode(MouseEvent mouseEvent) {
-        editMode = !editMode;
-        editmodepane.setVisible(editMode);
-        displaymodepane.setVisible(!editMode);
+        editMode.setValue(!editMode.get());
+        editmodepane.setVisible(editMode.get());
+        displaymodepane.setVisible(!editMode.get());
+
+        resultspane.getChildren().forEach(child -> child.setVisible((child == img3dView) != editMode.get()));
+        root.requestFocus();
+
+        xf.setDisable(true);
+        yf.setDisable(true);
+        zf.setDisable(true);
+        matrix.currentPointOnEdit.setSelected(false);
+        matrix.currentPointOnEdit = null;
     }
 }

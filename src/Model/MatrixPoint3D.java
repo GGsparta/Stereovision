@@ -14,6 +14,7 @@ public class MatrixPoint3D {
     public Sphere view;
     private double x, y, z;
     ArrayList<MatrixPoint3D> neighbours;
+    private boolean selected;
 
     MatrixPoint3D(double x, double y, double z, Color color) {
         this.x = x;
@@ -24,8 +25,8 @@ public class MatrixPoint3D {
         view.setMaterial(new PhongMaterial(this.color));
         actualizeView();
 
-        view.setOnMouseEntered(event -> view.setRadius(8));
-        view.setOnMouseExited(event -> view.setRadius(3));
+        view.setOnMouseEntered(event -> {if(!selected) view.setRadius(8);});
+        view.setOnMouseExited(event -> {if(!selected) view.setRadius(3);});
     }
 
     public void setPosition(double x, double y, double z) {
@@ -51,5 +52,11 @@ public class MatrixPoint3D {
 
     public double getZ() {
         return z;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+        if(selected) view.setRadius(8);
+        else view.setRadius(3);
     }
 }

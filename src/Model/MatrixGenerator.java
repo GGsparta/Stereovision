@@ -95,20 +95,16 @@ public class MatrixGenerator {
             int finalJ = j;
             Thread t = new Thread(() -> {
                 for (int i = windowSize / 2; i < imagesSize.x - (windowSize / 2); i += pace) { // no side pixel constraint
-                    try {
-                        // limit constraint
-                        int iR = findBestClosePointOnRow(i, finalJ, ipL);
-                        if (iR < 0) return;
+                    // limit constraint
+                    int iR = findBestClosePointOnRow(i, finalJ, ipL);
+                    if (iR < 0) return;
 
-                        // uniqueness & limit constraint
-                        //int iL = findBestClosePointOnRow(iR, finalJ, ipR);
-                        //if (abs(iL-i)>400 || iL<0) return;
+                    // uniqueness & limit constraint
+                    //int iL = findBestClosePointOnRow(iR, finalJ, ipR);
+                    //if (abs(iL-i)>400 || iL<0) return;
 
-                        syncronisedPointInsertion(iR, i, finalJ, lastIrFound);
+                    syncronisedPointInsertion(iR, i, finalJ, lastIrFound);
 
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 }
             });
             threads.add(t);
@@ -127,7 +123,7 @@ public class MatrixGenerator {
         }
     }
 
-    synchronized private void syncronisedPointInsertion(int iR, int iL, int j, IntegerProperty lastIrFound) throws InterruptedException {
+    synchronized private void syncronisedPointInsertion(int iR, int iL, int j, IntegerProperty lastIrFound) {
         if(iR>=lastIrFound.getValue()) { // order constraint
             lastIrFound.setValue(iR);
           pixelPairs.put(new Point(iL,j),new Point(iR,j));
