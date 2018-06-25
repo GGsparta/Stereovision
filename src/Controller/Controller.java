@@ -18,13 +18,20 @@ import javafx.collections.ObservableIntegerArray;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -32,16 +39,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 
 import javafx.scene.image.ImageView;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
@@ -63,6 +79,8 @@ public class Controller implements Initializable {
     public ImageView grid_black;
     public ImageView arrow_up;
     public ImageView arrow_down;
+    @FXML
+    WebView webView;
     @FXML
     private Label firstimagepath;
     @FXML
@@ -93,7 +111,17 @@ public class Controller implements Initializable {
     private TriangleMesh image3D;
     private Image image1;
     private boolean editMode;
+    @FXML
+    public void onLoadHelpFile(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/View/help_page.fxml"));
+        Parent root1 = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
 
+        stage.setTitle("Aide");
+        stage.setScene(new Scene(root1));
+        stage.show();
+
+    }
     public void Button1Action(ActionEvent event) {
         // Image imageToImplement;
         System.out.println("chooser opened");
@@ -113,8 +141,8 @@ public class Controller implements Initializable {
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning");
-            alert.setHeaderText("NO FILE SELECTED");
-            alert.setContentText("Once you open the file chooser , you better choose one xD");
+            alert.setHeaderText("Aucun fichier seléctionné");
+            alert.setContentText("Veuillez choisir une image.");
 
             alert.showAndWait();
         }
