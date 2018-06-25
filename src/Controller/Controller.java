@@ -27,6 +27,9 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -34,16 +37,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 
 import javafx.scene.image.ImageView;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
@@ -65,6 +77,8 @@ public class Controller implements Initializable {
     public ImageView grid_black;
     public ImageView arrow_up;
     public ImageView arrow_down;
+    @FXML
+    WebView webView;
     @FXML
     private Label firstimagepath;
     @FXML
@@ -96,7 +110,18 @@ public class Controller implements Initializable {
     private Image image1;
     private BooleanProperty editMode = new SimpleBooleanProperty(false);
     private MeshView img3dView;
+    private boolean editMode;
+    @FXML
+    public void onLoadHelpFile(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/View/help_page.fxml"));
+        Parent root1 = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
 
+        stage.setTitle("Aide");
+        stage.setScene(new Scene(root1));
+        stage.show();
+
+    }
     public void Button1Action(ActionEvent event) {
         // Image imageToImplement;
         System.out.println("chooser opened");
@@ -116,8 +141,8 @@ public class Controller implements Initializable {
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning");
-            alert.setHeaderText("NO FILE SELECTED");
-            alert.setContentText("Once you open the file chooser , you better choose one xD");
+            alert.setHeaderText("Aucun fichier seléctionné");
+            alert.setContentText("Veuillez choisir une image.");
 
             alert.showAndWait();
         }
@@ -157,7 +182,7 @@ public class Controller implements Initializable {
         xf = new TextField("0");
         xf.setPrefWidth(1000);
         xf.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(matrix!=null && matrix.currentPointOnEdit!=null) {
+            if (matrix != null && matrix.currentPointOnEdit != null) {
                 matrix.currentPointOnEdit.setPosition(
                         Double.parseDouble(newValue),
                         matrix.currentPointOnEdit.getY(),
@@ -169,7 +194,7 @@ public class Controller implements Initializable {
         yf = new TextField("0");
         yf.setPrefWidth(1000);
         yf.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(matrix!=null && matrix.currentPointOnEdit!=null) {
+            if (matrix != null && matrix.currentPointOnEdit != null) {
                 matrix.currentPointOnEdit.setPosition(
                         matrix.currentPointOnEdit.getX(),
                         Double.parseDouble(newValue),
@@ -181,7 +206,7 @@ public class Controller implements Initializable {
         zf = new TextField("0");
         zf.setPrefWidth(1000);
         zf.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(matrix!=null && matrix.currentPointOnEdit!=null) {
+            if (matrix != null && matrix.currentPointOnEdit != null) {
                 matrix.currentPointOnEdit.setPosition(
                         matrix.currentPointOnEdit.getX(),
                         matrix.currentPointOnEdit.getY(),
@@ -222,7 +247,7 @@ public class Controller implements Initializable {
         image1 = new Image("file:///" + firstPath);
         ImageView iv1 = new ImageView(image1);
         iv1.setPreserveRatio(true);
-        if(image1.getHeight()> image1.getWidth()) iv1.setFitHeight(200);
+        if (image1.getHeight() > image1.getWidth()) iv1.setFitHeight(200);
         else iv1.setFitWidth(200);
         firstimagepreview.getChildren().clear();
         firstimagepreview.getChildren().addAll(iv1);
@@ -230,31 +255,49 @@ public class Controller implements Initializable {
         Image image2 = new Image("file:///" + secondPath);
         ImageView iv2 = new ImageView(image2);
         iv2.setPreserveRatio(true);
-        if(image2.getHeight()>image2.getWidth()) iv2.setFitHeight(200);
+        if (image2.getHeight() > image2.getWidth()) iv2.setFitHeight(200);
         else iv2.setFitWidth(200);
         secondimagepreview.getChildren().clear();
         secondimagepreview.getChildren().addAll(iv2);
         loadingpane.setVisible(true);
 
-
-        new Thread(() -> {
-            MatrixGenerator matrixGenerator = new MatrixGenerator();
-            if (!matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null), SwingFXUtils.fromFXImage(image2, null)))
-                return;
-
-
-            matrix = matrixGenerator.computeMatrix(load_text.textProperty());
+        try {
+            new Thread(() -> {
+                MatrixGenerator matrixGenerator = new MatrixGenerator();
+                if (!matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null), SwingFXUtils.fromFXImage(image2, null)))
+                    return;
 
 
-            System.out.println("Creating surface...");
-            image3D = new TriangleMesh();
+                matrix = matrixGenerator.computeMatrix(load_text.textProperty());
 
-            refresh3DPictureSurface();
 
-            savebutton.setDisable(false);
-            System.out.println("Process finished!");
-            loadingpane.setVisible(false);
-        }).start();
+                System.out.println("Creating surface...");
+                image3D = new TriangleMesh();
+
+                refresh3DPictureSurface();
+
+                savebutton.setDisable(false);
+                System.out.println("Process finished!");
+                loadingpane.setVisible(false);
+            }).start();
+        } catch (NullPointerException ex) {
+            System.out.println(ex);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Images non trouvé");
+            alert.setContentText("aucune image détéctée");
+
+            alert.showAndWait();
+
+        } catch (Exception e) {
+            System.out.println(e);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Erreur produite");
+            alert.setContentText("erreur lors de l'éxécution du programme.");
+
+            alert.showAndWait();
+        }
     }
 
     private void refresh3DPictureSurface() {
@@ -325,7 +368,7 @@ public class Controller implements Initializable {
         image3D.getPoints().addAll(points);
         image3D.getFaces().addAll(faces);
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             img3dView = new MeshView(image3D);
             img3dView.setMaterial(new PhongMaterial(Color.WHITE,image1,null,null,null));
             resultspane.getChildren().add(0, img3dView);

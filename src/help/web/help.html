@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="bootstrap.css">
+	<title>Aide</title>
+	<style type="text/css">
+		body{
+
+			background-color: #eee;
+		}
+	</style>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+	<meta charset='UTF-8'>
+
+
+</head>
+<body>
+<script src="bootstrap.js"></script>
+<center><h1>Stéréovision</h1></center>
+
+<div id="deftitle"><h2>Stéréovision?</h2></div>
+<div id="intro">
+<div id="deftext"><p>La stéréovision ou mesure stéréoscopique est une méthode de mesure qui consiste à se servir de la prise d'images (photographiques ou numériques) prises de différents points de vue, pour déterminer les dimensions, les formes ou les positions d'objets.</p></div>
+<div id="method"><h2>La méthode</h2></div>
+<div id="methodtext"><p>Pour effectuer la mesure, il faut réaliser l'acquisition d'au moins deux images de l'objet à mesurer de deux points de vue différents.
+
+Après avoir enregistré deux prises de vue de deux points de vue différents d'un objet, les coordonnées images (couple stéréoscopique) des points à mesurer sur chacune des prises de vue sont déterminées sur chacune des images. La mise en concordance est généralement faite automatiquement.
+
+Pour déterminer l'échelle (les dimensions de la pièce), il est nécessaire d'étalonner le système de mesure. Les positions relatives des systèmes de prise de vue sont fixes.</p></div>
+</div>
+<div id="ourstuff">
+<div id="ourapp"><h2>Notre Application</h2></div>
+<div id="ouapptext"><p>On se basant sur les principes définis notre application permet a l'utilisateur d'effectuer une mesure stéréioscopique et livrer une image dans un espace 3D à partir de deux image entrées en paramètres</p></div>
+<div id="theimage">
+<center><div id="firstlook"><img src="allblank.png"></div></center>
+</div>
+<div id="upload">
+	<div id="uploadtext">
+	<p>L'application contient une partie de chargement ou l'utilisateur peut télécharger ses images pour appliquer les algorithmes de la stéréovision et retourner le résultat.</p>
+	</div>
+	<center><div id="uploadimage"><img src="uploadimage.png"/></div></center>
+</div>
+<div id="preview">
+	<div id="previewtext"><p>après avoir passer par la phase du upload l'utilisateur peut voir les images chargées sur deux panneaux différents,celui à gauche pour l'image de gauche et l'autre pour l'image de droite</p></div>
+	<center><div id="previewimage"><img src="previewimage.png"/></div></center>
+</div>
+<div id="results">
+	<div id="resultstext"><p>après avoir appuyer le boutton d'actualisation un algorithme de stéréovision va s'effectuer et l'application va calculer le taux d'avancement et l'afficher a l'utilisateur au cours du traitement</p></div>
+	<div id="loadertext"><p>comme c'est montré dans l'image dessous : </p> </div>
+	<center><div id="loaderimage"><img src="loaderimage.png"></div></center>
+	<div id="resultstext2"><p>les résultat vont être affichés sous forme d'une matriçe 3D qui pourra être manipuler par l'utilisateur en appliquant des filtres selon le besoin.</p></div>
+	<center><div id="resultsimage"><img src="resultsimage.png"></div></center>
+	<br>
+	<center><div id="resultsimage2"><img src="resultsimage2.png"></div></center>
+
+</div>
+<div id="passage">
+	<div id="textpassage"><p>pour passer au panneau d'édition , il suffit de cliquer sur la photo en bas du boutton actualiser,et ça va afficher le panneau d'édition qui est expliqué dans la prochaine partie de ce manuel.</p></div>
+	<center><div id="passgeimage"><img src="passageimage.png"></div></center>
+</div>
+<div id="edition">
+	<div id="editiontext"><p> Après avoir visualiser sa matriçe 3D l'utilisateur peux extraire les cordonnées des point de la matrice en cliquant sur le point correspondant dans le panneau des résultats , les point sont représentés par des petites boule sur la matrice , et les cordonnées vont être affichés sur les champs du text a gauche, comme vu dans l'image en dessous : </p> 
+	</div>
+	<center><div id="editionimage"><img src="editionimage.png"></div></center>
+
+	<br><center><div id="remarqueedition" style="color: red;font-size: 21px;"> <p>toute intéraction graphique avec la matriçe est désactivé quand l'utilisateur est sur le panneau d'édition.</p></div></center>
+
+</div>
+<div id="exceptions">
+<Br><br><br><br><br><br>
+	<center><div id="titleexceptions"><h2>Pendant l'utilisation de l'application plusieur erreurs peuvent être affichés.</h2></div></center>
+	<br><Br><br><br><Br><br>
+
+<div id="cafexception">
+<h2>Aucun fichier seléctionné</h2>
+<p>dans le cas ou l'utilisateur ouvre la fenêtre de séléction du fichier et il finit par ne pas choisir une image , l'application va montrer l'erreur  suivante , et l'utilisateur peut tout simplement fermer la fenêtre d'erreur et reprendre.</p>
+<center><div id="cafimage"><img src="cafimage.png"></div></cetner>
+</div>
+<div id="noimageexception">
+<h2>Image non trouvée</h2>
+
+	<div id="noimageexceptiontext"><p>Dans le cas ou l'utilisateur veut exécuter le programme en cliquant sur le boutton actualiser sans avoir charger des images avant,l'application affichera un message d'erreur critique qui l'oubligera à relancer le programme.</p></div>
+	<center><div id="noimageexceptionimage"><img src="noimageexceptionimage.png"></div></center>
+</div>
+<div id="differentdimesionsexception">
+<h2>Tailles différentes</h2>
+
+	<div id="ddetext"><p>le principe de la stéréovision nous oblige a charger deux images de la même taille,donc pour gérer ce problème dans notre application l'utilisateur va reçevoir un message d'erreur dans le cas ou l'utilisateur a chargé deux images qui ont deux tailles différentes. Et cet erreur va obliger l'utilisateur a relancer le programme.</p></div>
+	<center><div id="ddeimage"><img src="ddeimage.png"></div></cetner>
+</div>
+</div>
+</div>
+</body>
+</html>

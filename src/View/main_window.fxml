@@ -1,128 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.Circle?>
 <?import View.View3D?>
-<SplitPane fx:id="root" dividerPositions="0.29797979797979796" prefHeight="637.0" prefWidth="847.0"
-           xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
-    <AnchorPane maxWidth="400.0" minWidth="200.0" prefWidth="200.0"
-                style="-fx-background-color: white;-fx-font-family: 'MV Boli'">
-        <BorderPane fx:id="displaymodepane" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-                    AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
+<SplitPane fx:id="root" dividerPositions="0.29797979797979796" prefHeight="670.0" prefWidth="890.00" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+
+    <AnchorPane maxWidth="400.0" minWidth="200.0" prefWidth="200.0" style="-fx-background-color: white;-fx-font-family: 'MV Boli'">
+        <BorderPane fx:id="displaymodepane" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
             <top>
                 <VBox alignment="CENTER">
-                    <ImageView fx:id="eye_black" fitWidth="75" fitHeight="75"/>
-                    <Label text="Visualisation" translateY="-15" style="-fx-font-size: 30;"/>
+                    <ImageView fx:id="eye_black" fitHeight="75" fitWidth="75" />
+                    <Label style="-fx-font-size: 30;" text="Visualisation" translateY="-15" />
                 </VBox>
             </top>
             <center>
                 <VBox alignment="CENTER" spacing="20" translateY="-15">
+               <Button fx:id="help" mnemonicParsing="false" text="Aide" onAction="#onLoadHelpFile" />
                     <VBox style="-fx-padding: 10px">
                         <HBox alignment="CENTER" translateY="-8">
-                            <Separator prefWidth="200"/>
-                            <Label text="Sources" minWidth="80"
-                                   style="-fx-font-size: 20px; -fx-font-weight: bold;-fx-alignment: center"/>
-                            <Separator prefWidth="200"/>
+                            <Separator prefWidth="200" />
+                            <Label minWidth="80" style="-fx-font-size: 20px; -fx-font-weight: bold;-fx-alignment: center" text="Sources" />
+                            <Separator prefWidth="200" />
                         </HBox>
-                        <Label text="Image de gauche :" style="-fx-font-size: 16px"/>
+                        <Label style="-fx-font-size: 16px" text="Image de gauche :" />
                         <HBox alignment="CENTER_RIGHT" spacing="10">
-                            <Label fx:id="firstimagepath" prefWidth="1000" text="Veuillez choisir une image" style="-fx-font-style: italic;-fx-padding: 4;-fx-alignment: center-right;-fx-text-overrun: leading-ellipsis;"/>
-                            <Button fx:id="firstimagebrowse" mnemonicParsing="false"
-                                    onAction="#Button1Action" text="..." />
+                            <Label fx:id="firstimagepath" prefWidth="1000" style="-fx-font-style: italic;-fx-padding: 4;-fx-alignment: center-right;-fx-text-overrun: leading-ellipsis;" text="Veuillez choisir une image" />
+                            <Button fx:id="firstimagebrowse" mnemonicParsing="false" onAction="#Button1Action" text="..." />
                         </HBox>
-                        <Label text="Image de droite : " style="-fx-font-size: 16px"/>
+                        <Label style="-fx-font-size: 16px" text="Image de droite : " />
                         <HBox alignment="CENTER_RIGHT" spacing="10">
-                            <Label fx:id="secondimagepath" prefWidth="1000" text="Veuillez choisir une image" style="-fx-font-style: italic;-fx-padding: 4;-fx-alignment: center-right;-fx-text-overrun: leading-ellipsis;"/>
-                            <Button fx:id="secondimagebrowse" mnemonicParsing="false" onAction="#Button2Action" text="..."/>
+                            <Label fx:id="secondimagepath" prefWidth="1000" style="-fx-font-style: italic;-fx-padding: 4;-fx-alignment: center-right;-fx-text-overrun: leading-ellipsis;" text="Veuillez choisir une image" />
+                            <Button fx:id="secondimagebrowse" mnemonicParsing="false" onAction="#Button2Action" text="..." />
                         </HBox>
                     </VBox>
-                    <VBox style="-fx-padding: 10px" spacing="10">
+                    <VBox spacing="10" style="-fx-padding: 10px">
                         <HBox alignment="CENTER" translateY="-8">
-                            <Separator prefWidth="200"/>
-                            <Label text="Effets" minWidth="70"
-                                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-alignment: center;"/>
-                            <Separator prefWidth="200"/>
+                            <Separator prefWidth="200" />
+                            <Label minWidth="70" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-alignment: center;" text="Effets" />
+                            <Separator prefWidth="200" />
                         </HBox>
                         <AnchorPane>
-                            <Label AnchorPane.leftAnchor="0" text="Filtre :" style="-fx-font-size: 16px"/>
-                            <ComboBox AnchorPane.rightAnchor="0" fx:id="filtercombo" promptText="Choisir Filtre"/>
+                            <Label style="-fx-font-size: 16px" text="Filtre :" AnchorPane.leftAnchor="0" />
+                            <ComboBox fx:id="filtercombo" promptText="Choisir Filtre" AnchorPane.rightAnchor="0" />
                         </AnchorPane>
                     </VBox>
                     <VBox alignment="CENTER" style="-fx-padding: 0px 40px 0px 40px">
-                        <Button fx:id="savebutton" mnemonicParsing="false" onAction="#SaveAction" text="Actualiser" style="-fx-font-size: 17;" prefWidth="1000"/>
+                        <Button fx:id="savebutton" mnemonicParsing="false" onAction="#SaveAction" prefWidth="1000" style="-fx-font-size: 17;" text="Actualiser" />
                     </VBox>
                 </VBox>
             </center>
             <bottom>
-                <VBox alignment="TOP_CENTER" styleClass="black-button" translateY="25" onMouseClicked="#SwitchMode" scaleY="0.8">
-                    <Circle radius="15" scaleX="1.5" translateY="-28" fill="#383838"/>
-                    <ImageView fx:id="arrow_up" fitWidth="18" fitHeight="9" translateY="-46"/>
-                    <ImageView fx:id="grid_white" fitWidth="40" fitHeight="40" translateY="-21" scaleY="1.3"/>
+                <VBox alignment="TOP_CENTER" onMouseClicked="#SwitchMode" scaleY="0.8" styleClass="black-button" translateY="25">
+                    <Circle fill="#383838" radius="15" scaleX="1.5" translateY="-28" />
+                    <ImageView fx:id="arrow_up" fitHeight="9" fitWidth="18" translateY="-46" />
+                    <ImageView fx:id="grid_white" fitHeight="40" fitWidth="40" scaleY="1.3" translateY="-21" />
                 </VBox>
             </bottom>
         </BorderPane>
-        <BorderPane fx:id="editmodepane" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-                    AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" visible="false">
+        <BorderPane fx:id="editmodepane" visible="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
             <top>
-                <VBox alignment="TOP_CENTER" styleClass="black-button" translateY="-25" onMouseClicked="#SwitchMode" scaleY="0.8">
-                    <ImageView fx:id="eye_white" fitWidth="40" fitHeight="40" translateY="21" scaleY="1.3"/>
-                    <Circle radius="15" scaleX="1.5" translateY="38" fill="#383838"/>
-                    <ImageView fx:id="arrow_down" fitWidth="18" fitHeight="9" translateY="20"/>
+                <VBox alignment="TOP_CENTER" onMouseClicked="#SwitchMode" scaleY="0.8" styleClass="black-button" translateY="-25">
+                    <ImageView fx:id="eye_white" fitHeight="40" fitWidth="40" scaleY="1.3" translateY="21" />
+                    <Circle fill="#383838" radius="15" scaleX="1.5" translateY="38" />
+                    <ImageView fx:id="arrow_down" fitHeight="9" fitWidth="18" translateY="20" />
                 </VBox>
             </top>
             <center>
-                <VBox alignment="CENTER" translateY="-15" style="-fx-padding: 10px">
+                <VBox alignment="CENTER" style="-fx-padding: 10px" translateY="-15">
                             <HBox alignment="CENTER" translateY="-8">
-                                <Separator prefWidth="200"/>
-                                <Label text="Effets" minWidth="70"
-                                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-alignment: center;"/>
-                                <Separator prefWidth="200"/>
+                                <Separator prefWidth="200" />
+                                <Label minWidth="70" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-alignment: center;" text="Effets" />
+                                <Separator prefWidth="200" />
                             </HBox>
-                            <VBox fx:id="transitionpane" translateY="-5" prefWidth="112.0" spacing="5"/>
+                            <VBox fx:id="transitionpane" prefWidth="112.0" spacing="5" translateY="-5" />
                 </VBox>
             </center>
             <bottom>
-                <VBox alignment="CENTER" style="-fx-padding: 15px" spacing="10">
-                    <ImageView fx:id="grid_black" fitWidth="75" fitHeight="75"/>
-                    <Label text="Édition" translateX="-3" style="-fx-font-size: 30;"/>
+                <VBox alignment="CENTER" spacing="10" style="-fx-padding: 15px">
+                    <ImageView fx:id="grid_black" fitHeight="75" fitWidth="75" />
+                    <Label style="-fx-font-size: 30;" text="Édition" translateX="-3" />
                 </VBox>
             </bottom>
         </BorderPane>
     </AnchorPane>
-    <AnchorPane
-                style="-fx-background-color: #ddd">
-        <VBox AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0">
-            <HBox AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" alignment="CENTER"
-                  minHeight="200">
+    <AnchorPane style="-fx-background-color: #ddd">
+        <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <HBox alignment="CENTER" minHeight="200" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                 <Pane>
-                    <StackPane fx:id="firstimagepreview" style="-fx-padding:3px"/>
-                    <Label fx:id="firstimageid" text="First image preview : " layoutX="10" layoutY="10"
-                           style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;"/>
+                    <StackPane fx:id="firstimagepreview" style="-fx-padding:3px" />
+                    <Label fx:id="firstimageid" layoutX="10" layoutY="10" style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;" text="First image preview : " />
                 </Pane>
-                <Separator layoutY="27.0" orientation="VERTICAL" style="-fx-background-color: #333"/>
+                <Separator layoutY="27.0" orientation="VERTICAL" style="-fx-background-color: #333" />
                 <Pane>
-                    <StackPane fx:id="secondimagepreview" style="-fx-padding:3px"/>
-                    <Label fx:id="secondimageid" text="Second image preview : " layoutX="10" layoutY="10"
-                           style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;"/>
+                    <StackPane fx:id="secondimagepreview" style="-fx-padding:3px" />
+                    <Label fx:id="secondimageid" layoutX="10" layoutY="10" style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;" text="Second image preview : " />
                 </Pane>
             </HBox>
-            <Separator minHeight="4" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-background-color: #333;"/>
-            <Pane AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding: 20px;">
+            <Separator minHeight="4" style="-fx-background-color: #333;" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" />
+            <Pane style="-fx-padding: 20px;" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
                 <StackPane>
-                    <View3D fx:id="resultspane"/><!--prefHeight="326.0" prefWidth="552.0"!-->
-                    <VBox fx:id="loadingpane" visible="false" maxWidth="125" maxHeight="125"
-                          spacing="20" alignment="CENTER"
-                          style="-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;-fx-padding: 10px">
-                        <ImageView fx:id="load_gif" fitWidth="40" fitHeight="40"/>
-                        <Label fx:id="load_text" textAlignment="CENTER"/>
+                    <View3D fx:id="resultspane" /><!--prefHeight="326.0" prefWidth="552.0"!-->
+                    <VBox fx:id="loadingpane" alignment="CENTER" maxHeight="125" maxWidth="125" spacing="20" style="-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;-fx-padding: 10px" visible="false">
+                        <ImageView fx:id="load_gif" fitHeight="40" fitWidth="40" />
+                        <Label fx:id="load_text" textAlignment="CENTER" />
                     </VBox>
                 </StackPane>
-                <Label text="Results Preview : " layoutX="10" layoutY="10"
-                       style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;"/>
+                <Label layoutX="10" layoutY="10" style="-fx-padding:3px;-fx-background-color: white; -fx-border-width: 1px; -fx-border-color: #222; -fx-border-radius: 5px; -fx-background-radius: 5px;" text="Results Preview : " />
             </Pane>
         </VBox>
     </AnchorPane>
+
+
 </SplitPane>

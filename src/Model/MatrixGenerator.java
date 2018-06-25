@@ -6,8 +6,10 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Point3D;
+import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
+import sun.net.www.content.text.PlainTextInputStream;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -48,15 +50,47 @@ public class MatrixGenerator {
         pixelPairs = new HashMap<>();
     }
 
-    public boolean setInputPictures(BufferedImage inputPictureLeft, BufferedImage inputPictureRight) {
+    public boolean setInputPictures(BufferedImage inputPictureLeft, BufferedImage inputPictureRight)  {
         this.ipL = inputPictureLeft;
         this.ipR = inputPictureRight;
+        System.out.println("is it null?"+inputPictureLeft);
+        try {
+            if(inputPictureLeft == null || inputPictureRight == null) throw new NullImagesException();
+            if (!(ipL.getWidth() == ipR.getWidth() && ipL.getHeight() == ipR.getHeight())) throw new DifferentDimensionsException();
+            imagesSize = new Point(ipL.getWidth(), ipL.getHeight());
+            pace *= (ipL.getWidth() * ipL.getHeight()) / (233 * 350);
 
-        imagesSize = new Point(ipL.getWidth(), ipL.getHeight());
-        pace *= (ipL.getWidth()*ipL.getHeight()) / (233*350);
+            // if pictures are not the same size, it doesn't work.
+            return ipL.getWidth() == ipR.getWidth() && ipL.getHeight() == ipR.getHeight();
+        } catch (NullImagesException ex) {
+            System.out.println(ex);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Warning");
+                    alert.setHeaderText("Images non trouvé");
+                    alert.setContentText("aucune image détéctée");
 
-        // if pictures are not the same size, it doesn't work.
-        return ipL.getWidth()== ipR.getWidth() && ipL.getHeight()== ipR.getHeight();
+                    alert.showAndWait();
+                }
+            });
+
+        } catch (DifferentDimensionsException ex){
+            System.out.println(ex);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Warning");
+                    alert.setHeaderText("Images des tailles différents");
+                    alert.setContentText("Tailles des images différentes.");
+
+                    alert.showAndWait();
+                }
+            });
+        }
+    return false;
     }
 
     public Matrix computeMatrix(StringProperty progessDisplay) {
