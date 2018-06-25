@@ -114,9 +114,9 @@ public class Controller implements Initializable {
     private BooleanProperty editMode = new SimpleBooleanProperty(false);
     private MeshView img3dView;
     @FXML
-    public void onLoadHelpFile(ActionEvent event) throws IOException {
+    public void onLoadHelpFile(MouseEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/View/help_page.fxml"));
-        Parent root1 = (Parent) fxmlLoader.load();
+        Parent root1 = fxmlLoader.load();
         Stage stage = new Stage();
 
         stage.setTitle("Aide");
