@@ -9,7 +9,6 @@ import javafx.geometry.Point3D;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
-import sun.net.www.content.text.PlainTextInputStream;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

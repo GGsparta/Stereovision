@@ -22,10 +22,13 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -110,7 +113,6 @@ public class Controller implements Initializable {
     private Image image1;
     private BooleanProperty editMode = new SimpleBooleanProperty(false);
     private MeshView img3dView;
-    private boolean editMode;
     @FXML
     public void onLoadHelpFile(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/View/help_page.fxml"));
