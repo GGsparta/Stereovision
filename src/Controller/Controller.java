@@ -1,65 +1,44 @@
 package Controller;
 
-import Magic.ResizeHeightTranslation;
-import Model.Matrix;
-import Model.MatrixGenerator;
-import Model.MatrixPoint3D;
+import Model.*;
 import View.View3D;
 import delaunay_triangulation.Delaunay_Triangulation;
 import delaunay_triangulation.Point_dt;
 import delaunay_triangulation.Triangle_dt;
-import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableIntegerArray;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.*;
-import javafx.scene.web.WebEngine;
+import javafx.scene.shape.MeshView;
+import javafx.scene.shape.TriangleMesh;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
-import javafx.scene.image.ImageView;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
-
-import javafx.scene.image.Image;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
+import java.util.HashMap;
+import java.util.ResourceBundle;
 
 
 public class Controller implements Initializable {
@@ -103,8 +82,8 @@ public class Controller implements Initializable {
     @FXML
     private Pane transitionpane;
     private ObservableList<String> list = FXCollections.observableArrayList("Filter1", "Filter2", "Filter3", "Filter4");
-    private String firstPath = "D:\\yoyo6\\Documents\\UTBM\\Stereovision\\examples\\MILITARY_LEFT.jpg"; // TODO remove init test path
-    private String secondPath = "D:\\yoyo6\\Documents\\UTBM\\Stereovision\\examples\\MILITARY_RIGHT.jpg"; // TODO remove init test path
+    private String firstPath = "";
+    private String secondPath = "";
     private TextField xf;
     private TextField yf;
     private TextField zf;
@@ -134,19 +113,11 @@ public class Controller implements Initializable {
         if (selectedFile != null) {
             try {
                 firstPath = selectedFile.getAbsolutePath();
-
                 firstimagepath.setText(firstPath);
-                //imageToImplement=new Image(Controller.class.getResourceAsStream(firstPath));
+                if(!secondPath.equals("")) savebutton.setDisable(false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning");
-            alert.setHeaderText("Aucun fichier seléctionné");
-            alert.setContentText("Veuillez choisir une image.");
-
-            alert.showAndWait();
         }
     }
 
@@ -160,16 +131,10 @@ public class Controller implements Initializable {
             try {
                 secondPath = selectedFile.getPath();
                 secondimagepath.setText(secondPath);
+                if(!firstPath.equals("")) savebutton.setDisable(false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning");
-            alert.setHeaderText("NO FILE SELECTED");
-            alert.setContentText("Once you open the file chooser , you better choose one xD");
-
-            alert.showAndWait();
         }
     }
 
@@ -239,8 +204,6 @@ public class Controller implements Initializable {
 
         pt.play();*/
         transitionpane.getChildren().addAll(xb,yb,zb);
-
-
     }
 
     public void SaveAction(ActionEvent event) {
@@ -266,39 +229,69 @@ public class Controller implements Initializable {
         try {
             new Thread(() -> {
                 MatrixGenerator matrixGenerator = new MatrixGenerator();
-                if (!matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null), SwingFXUtils.fromFXImage(image2, null)))
-                    return;
+                try {
 
 
-                matrix = matrixGenerator.computeMatrix(load_text.textProperty());
+                    matrixGenerator.setInputPictures(SwingFXUtils.fromFXImage(image1, null), SwingFXUtils.fromFXImage(image2, null));
+                    matrix = matrixGenerator.computeMatrix(load_text.textProperty());
+                    System.out.println("Creating surface...");
+                    image3D = new TriangleMesh();
+                    refresh3DPictureSurface();
+                    System.out.println("Process finished!");
 
+                } catch (NullImagesException ex) {
+                    ex.printStackTrace();
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Attention");
+                        alert.setHeaderText("Images non trouvées!");
+                        alert.setContentText("Une ou plusieurs images n'ont pas été trouvées.");
+                        firstimagepreview.getChildren().clear();
+                        secondimagepreview.getChildren().clear();
 
-                System.out.println("Creating surface...");
-                image3D = new TriangleMesh();
+                        alert.showAndWait();
+                    });
+                } catch (DifferentDimensionsException ex){
+                    ex.printStackTrace();
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Attention");
+                        alert.setHeaderText("Images de tailles différentes!");
+                        alert.setContentText("Les images doivent être de même taille.");
+                        firstimagepreview.getChildren().clear();
+                        secondimagepreview.getChildren().clear();
 
-                refresh3DPictureSurface();
+                        alert.showAndWait();
+                    });
+                }
+
 
                 savebutton.setDisable(false);
-                System.out.println("Process finished!");
                 loadingpane.setVisible(false);
             }).start();
         } catch (NullPointerException ex) {
-            System.out.println(ex);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Warning");
             alert.setHeaderText("Images non trouvé");
             alert.setContentText("aucune image détéctée");
 
             alert.showAndWait();
+            firstimagepreview.getChildren().clear();
+            secondimagepreview.getChildren().clear();
 
+            ex.printStackTrace();
         } catch (Exception e) {
-            System.out.println(e);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Warning");
             alert.setHeaderText("Erreur produite");
             alert.setContentText("erreur lors de l'éxécution du programme.");
 
             alert.showAndWait();
+
+            firstimagepreview.getChildren().clear();
+            secondimagepreview.getChildren().clear();
+
+            e.printStackTrace();
         }
     }
 
@@ -427,8 +420,13 @@ public class Controller implements Initializable {
                 case Q:
                     resultspane.moving[3] = false;
                     break;
+
+                case TAB:
+                    SwitchMode(null);
+                    break;
             }
         });
+
 
         load_gif.setImage(new Image("Assets/Images/loader.gif"));
         eye_black.setImage(new Image("Assets/Images/eye_black.png"));
@@ -467,7 +465,9 @@ public class Controller implements Initializable {
         xf.setDisable(true);
         yf.setDisable(true);
         zf.setDisable(true);
-        matrix.currentPointOnEdit.setSelected(false);
-        matrix.currentPointOnEdit = null;
+        if (matrix != null) {
+            if (matrix.currentPointOnEdit != null) matrix.currentPointOnEdit.setSelected(false);
+            matrix.currentPointOnEdit = null;
+        }
     }
 }

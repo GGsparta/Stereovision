@@ -49,47 +49,15 @@ public class MatrixGenerator {
         pixelPairs = new HashMap<>();
     }
 
-    public boolean setInputPictures(BufferedImage inputPictureLeft, BufferedImage inputPictureRight)  {
+    public void setInputPictures(BufferedImage inputPictureLeft, BufferedImage inputPictureRight) throws NullImagesException, DifferentDimensionsException {
         this.ipL = inputPictureLeft;
         this.ipR = inputPictureRight;
-        System.out.println("is it null?"+inputPictureLeft);
-        try {
-            if(inputPictureLeft == null || inputPictureRight == null) throw new NullImagesException();
-            if (!(ipL.getWidth() == ipR.getWidth() && ipL.getHeight() == ipR.getHeight())) throw new DifferentDimensionsException();
-            imagesSize = new Point(ipL.getWidth(), ipL.getHeight());
-            pace *= (ipL.getWidth() * ipL.getHeight()) / (233 * 350);
-
-            // if pictures are not the same size, it doesn't work.
-            return ipL.getWidth() == ipR.getWidth() && ipL.getHeight() == ipR.getHeight();
-        } catch (NullImagesException ex) {
-            System.out.println(ex);
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Warning");
-                    alert.setHeaderText("Images non trouvé");
-                    alert.setContentText("aucune image détéctée");
-
-                    alert.showAndWait();
-                }
-            });
-
-        } catch (DifferentDimensionsException ex){
-            System.out.println(ex);
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Warning");
-                    alert.setHeaderText("Images des tailles différents");
-                    alert.setContentText("Tailles des images différentes.");
-
-                    alert.showAndWait();
-                }
-            });
-        }
-    return false;
+        System.out.println("is it null?" + inputPictureLeft);
+        if (inputPictureLeft == null || inputPictureRight == null) throw new NullImagesException();
+        if (!(ipL.getWidth() == ipR.getWidth() && ipL.getHeight() == ipR.getHeight()))
+            throw new DifferentDimensionsException();
+        imagesSize = new Point(ipL.getWidth(), ipL.getHeight());
+        pace *= (ipL.getWidth() * ipL.getHeight()) / (233 * 350);
     }
 
     public Matrix computeMatrix(StringProperty progessDisplay) {

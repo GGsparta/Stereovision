@@ -71,7 +71,7 @@
                     </VBox>
                     <VBox alignment="CENTER" style="-fx-padding: 0px 40px 0px 40px">
                         <Button fx:id="savebutton" mnemonicParsing="false" onAction="#SaveAction" prefWidth="1000"
-                                style="-fx-font-size: 17;" text="Actualiser"/>
+                                style="-fx-font-size: 17;" text="Actualiser" disable="true"/>
                     </VBox>
                 </VBox>
             </center>
