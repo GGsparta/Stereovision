@@ -470,8 +470,7 @@ public class Controller implements Initializable {
         if (matrix != null) {
             if (matrix.currentPointOnEdit != null) matrix.currentPointOnEdit.setSelected(false);
             matrix.currentPointOnEdit = null;
+            refresh3DPictureSurface();
         }
-
-        refresh3DPictureSurface();
     }
 }
