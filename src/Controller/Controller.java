@@ -315,6 +315,8 @@ public class Controller implements Initializable {
                     yf.setDisable(false);
                     zf.setText(point.getZ()+"");
                     zf.setDisable(false);
+                    if(matrix.currentPointOnEdit!=null)
+                        point.setSelected(false);
                     matrix.currentPointOnEdit = point;
                     point.setSelected(true);
                 });
@@ -469,5 +471,7 @@ public class Controller implements Initializable {
             if (matrix.currentPointOnEdit != null) matrix.currentPointOnEdit.setSelected(false);
             matrix.currentPointOnEdit = null;
         }
+
+        refresh3DPictureSurface();
     }
 }
