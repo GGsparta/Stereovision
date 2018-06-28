@@ -243,7 +243,7 @@ public class Controller implements Initializable {
                     ex.printStackTrace();
                     Platform.runLater(() -> {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Attention");
+                        alert.setTitle("Erreur");
                         alert.setHeaderText("Images non trouvées!");
                         alert.setContentText("Une ou plusieurs images n'ont pas été trouvées.");
                         firstimagepreview.getChildren().clear();
@@ -255,9 +255,9 @@ public class Controller implements Initializable {
                     ex.printStackTrace();
                     Platform.runLater(() -> {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Attention");
+                        alert.setTitle("Erreur");
                         alert.setHeaderText("Images de tailles différentes!");
-                        alert.setContentText("Les images doivent être de même taille.");
+                        alert.setContentText("Pour générer la matrice, les images doivent être de même taille. Veuillez essayer avec d'autres images.");
                         firstimagepreview.getChildren().clear();
                         secondimagepreview.getChildren().clear();
 
@@ -271,9 +271,9 @@ public class Controller implements Initializable {
             }).start();
         } catch (NullPointerException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Warning");
-            alert.setHeaderText("Images non trouvé");
-            alert.setContentText("aucune image détéctée");
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Images non trouvées!");
+            alert.setContentText("Une ou plusieurs images n'ont pas été trouvées.");
 
             alert.showAndWait();
             firstimagepreview.getChildren().clear();
@@ -282,9 +282,9 @@ public class Controller implements Initializable {
             ex.printStackTrace();
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Warning");
-            alert.setHeaderText("Erreur produite");
-            alert.setContentText("erreur lors de l'éxécution du programme.");
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Echec de la génération!");
+            alert.setContentText("Une erreur inconnue a interrompu la génération.");
 
             alert.showAndWait();
 
