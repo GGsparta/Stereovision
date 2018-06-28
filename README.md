@@ -1,10 +1,6 @@
 # Stereovision
 This academic HCI project is using JavaFX, based on Java 10.
 
-### TODO list
-- Write stereovision algorithms (respect MVC)
-- Display layouts seen at the BU
-
 ### Prototypes
 - Prototype 1.0:
 >![prototype 1.0](https://preview.ibb.co/bJG447/GL40_prototype_1_0.png)
